@@ -22,34 +22,32 @@ const FilmsPage = () => {
   }, [type]);
 
   return (
-    <div className="text-white bg-neutral-900">
-      <div className="relative mx-auto max-w-7xl">
-        <div className="flex gap-8 p-3">
-          <div className="flex flex-col w-1/5 gap-8 py-6 text-xl text-center uppercase pt-14">
-            {types.map((t) => {
+    <div className="relative mx-auto max-w-7xl">
+      <div className="flex gap-8">
+        <div className="flex flex-col w-1/5 gap-5 py-6 text-xl text-center uppercase">
+          {types.map((t) => {
+            return (
+              <div
+                className={`cursor-pointer hover:font-bold ${
+                  type === t ? "font-bold duration-300" : ""
+                }`}
+                onClick={() => setType(t)}
+                key={t}
+              >
+                {t}
+              </div>
+            );
+          })}
+        </div>
+        <div className="flex flex-col items-center justify-center w-4/5 gap-6 py-5">
+          <div className="grid w-full grid-cols-3 gap-8">
+            {films.map((film) => {
               return (
-                <div
-                  className={`cursor-pointer hover:text-blue-600 ${
-                    type === t ? "text-blue-600 duration-300" : ""
-                  }`}
-                  onClick={() => setType(t)}
-                  key={t}
-                >
-                  {t}
-                </div>
+                <Link to={`/film/${film.id}`}>
+                  <FilmCard key={film.id} film={film} type={type} />
+                </Link>
               );
             })}
-          </div>
-          <div className="flex flex-col items-center justify-center w-4/5 gap-6 py-5">
-            <div className="grid w-full grid-cols-3 gap-5">
-              {films.map((film) => {
-                return (
-                  <Link to={`/film/${film.id}`}>
-                    <FilmCard key={film.id} film={film} type={type} />
-                  </Link>
-                );
-              })}
-            </div>
           </div>
         </div>
       </div>

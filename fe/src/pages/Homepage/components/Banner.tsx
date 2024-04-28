@@ -17,11 +17,11 @@ const Banner = () => {
   };
   return (
     <Slider {...settings}>
-      <img className="w-full h-[450px] object-fill" src={kong} alt="" />
-      <img className="w-full h-[450px] object-fill" src={thanhGuom} alt="" />
-      <img className="w-full h-[450px] object-fill" src={kong} alt="" />
-      <img className="w-full h-[450px] object-fill" src={thanhGuom} alt="" />
-      <img className="w-full h-[450px] object-fill" src={kong} alt="" />
+      <img className="w-full h-[550px] object-fill" src={kong} alt="" />
+      <img className="w-full h-[550px] object-fill" src={thanhGuom} alt="" />
+      <img className="w-full h-[550px] object-fill" src={kong} alt="" />
+      <img className="w-full h-[550px] object-fill" src={thanhGuom} alt="" />
+      <img className="w-full h-[550px] object-fill" src={kong} alt="" />
     </Slider>
   );
 };

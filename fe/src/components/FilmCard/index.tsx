@@ -4,60 +4,69 @@ import { Film } from "../../type/type";
 import React from "react";
 
 interface FilmCardProps {
+  className?: string;
   film: Film;
   type?: string;
 }
 const FilmCard: React.FC<FilmCardProps> = (props) => {
-  const { film, type } = props;
+  const { className, film, type } = props;
 
   return (
-    <div className="flex flex-col w-full gap-1 p-2 bg-slate-600">
-      <div>
-        <img className="h-[400px] w-full rounded-xl" src={film.image} />
+    <div
+      className={
+        "flex flex-col gap-1 pb-1 overflow-hidden bg-yellow-700 rounded bg-opacity-20 h-fit group/item " +
+        className
+      }
+    >
+      <div className="relative overflow-hidden">
+        <img className=" w-full h-[370px] mx-auto" src={film.image} />
+        <div className="absolute bottom-0 left-0 hidden w-full py-4 bg-black animate-go-up group-hover/item:grid bg-opacity-70 place-items-center">
+          {type === "Phim đang chiếu" ? (
+            <div className="flex flex-row gap-4">
+              <div className="flex items-center justify-center h-10 gap-2 px-4 py-1 bg-green-300 rounded-md cursor-pointer hover:bg-green-500 w-fit">
+                <IoTicketOutline className="text-[20px]" />
+                <div className="text-[16px] ">Đặt vé </div>
+              </div>
+              <div className="grid px-2 bg-green-300 rounded-md cursor-pointer hover:bg-green-500 place-items-center">
+                <CiCircleInfo className="text-[25px] " />
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-row gap-2">
+              <div className="flex items-center justify-center gap-2 px-3 py-1 bg-green-300 rounded-md hover:bg-green-500 ">
+                <CiCircleInfo className="text-[25px]" />
+                <div className="text-[16px]">CHI TIẾT</div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-      <div className="flex gap-2 text-sm text-white">
-        {/* <h1 className="w-8 p-1 text-center bg-red-600 rounded-md">{(film.name_vn.match(/\((.*?)\)/)[1] === "P") ? "T13" : film.name_vn.match(/\((.*?)\)/)[1]}</h1> */}
-        <h1 className="border border-yellow-200 text-[13px] whitespace-nowrap rounded-md p-1 cursor-pointer">
+      <div className="flex gap-1  px-2 text-[13px]  leading-[14px]">
+        <div className="grid px-1 bg-yellow-300 border border-yellow-900 rounded cursor-pointer whitespace-nowrap place-items-center">
           {film.type_name_vn}
-        </h1>
-        <h1 className="p-1 bg-green-400 rounded-md cursor-pointer">
+        </div>
+        <div className="grid p-1 bg-green-300 border border-green-900 rounded cursor-pointer place-items-center ">
           {film.formats_name_en}
-        </h1>
+        </div>
       </div>
-      <h1 className="text-[20px] text-white w-fit cursor-pointer hover:text-black">
-        {film.name_vn}
-      </h1>
-      <div className="flex flex-row gap-1">
-        <h1 className="text-white">Thời lượng:</h1>
-        <h1 className="text-white cursor-pointer hover:text-black">
-          {film.time + " "} phút
-        </h1>
-      </div>
-      <div className="flex flex-row gap-1">
-        <h1 className="text-white">Khởi chiếu:</h1>
-        <h1 className="text-white cursor-pointer hover:text-black">
-          {film.release_date && film.release_date.slice(0, 9)}
-        </h1>
-      </div>
-      <div>
-        {type === "Phim đang chiếu" ? (
-          <div className="flex flex-row gap-2">
-            <div className="bg-green-600 flex text-white w-[140px] h-[40px] rounded-md gap-1 p-1 cursor-pointer">
-              <IoTicketOutline className="text-[20px] m-[6px]" />
-              <h1 className="p-1 text-[14px] ">Đặt vé ngay</h1>
-            </div>
-            <div className="border-green-600 bg-slate-600 border-[2px] rounded-md grid place-items-center w-[40px] h-[40px] cursor-pointer hover:bg-green-400">
-              <CiCircleInfo className="text-[25px] m-1" />
+      <div className="flex items-center  px-2 h-20 text-[14px]">
+        <div className="flex flex-col gap-2">
+          <div className="text-[18px] leading-5  cursor-pointer hover:text-black w-full ">
+            {film.name_vn}
+          </div>
+          <div className="flex flex-row gap-1 leading-3">
+            <div className="">Thời lượng:</div>
+            <div className="cursor-pointer hover:text-black">
+              {film.time + " "} phút
             </div>
           </div>
-        ) : (
-          <div className="flex flex-row gap-2">
-            <div className="border-green-600 bg-slate-600 border-[2px] rounded-md place-items-center flex text-white w-[200px] h-[40px] hover:bg-green-400">
-              <CiCircleInfo className="text-[25px] m-1" />
-              <h1 className="p-1 text-[14px]">THÔNG TIN CHI TIẾT</h1>
+          <div className="flex flex-row gap-1 leading-3">
+            <div className="">Khởi chiếu:</div>
+            <div className="cursor-pointer hover:text-black">
+              {film.release_date && film.release_date.slice(0, 9)}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

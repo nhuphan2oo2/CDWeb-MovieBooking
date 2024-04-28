@@ -1,13 +1,13 @@
 const Footer = () => {
   return (
-    <footer className="bg-gray-900">
-      <div className="mx-auto w-full max-w-screen-xl">
+    <footer className="mt-10 bg-tertiary">
+      <div className="w-full max-w-screen-xl mx-auto">
         <div className="grid grid-cols-2 gap-8 px-4 py-6 justify-items-center lg:py-8 md:grid-cols-4">
           <div>
             <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
               Company
             </h2>
-            <ul className="text-gray-500 dark:text-gray-400 font-medium">
+            <ul className="font-medium text-gray-500 dark:text-gray-400">
               <li className="mb-4">
                 <a href="#" className=" hover:underline">
                   About
@@ -34,7 +34,7 @@ const Footer = () => {
             <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
               Help center
             </h2>
-            <ul className="text-gray-500 dark:text-gray-400 font-medium">
+            <ul className="font-medium text-gray-500 dark:text-gray-400">
               <li className="mb-4">
                 <a href="#" className="hover:underline">
                   Discord Server
@@ -61,7 +61,7 @@ const Footer = () => {
             <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
               Legal
             </h2>
-            <ul className="text-gray-500 dark:text-gray-400 font-medium">
+            <ul className="font-medium text-gray-500 dark:text-gray-400">
               <li className="mb-4">
                 <a href="#" className="hover:underline">
                   Privacy Policy
@@ -83,7 +83,7 @@ const Footer = () => {
             <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
               Download
             </h2>
-            <ul className="text-gray-500 dark:text-gray-400 font-medium">
+            <ul className="font-medium text-gray-500 dark:text-gray-400">
               <li className="mb-4">
                 <a href="#" className="hover:underline">
                   iOS

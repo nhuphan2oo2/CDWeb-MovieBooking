@@ -31,3 +31,19 @@ export type Film = {
   language_en?: string;
   sortorder?: string;
 };
+
+export type Setting = {
+  dots?: boolean;
+  arrows?: boolean;
+  infinite?: boolean;
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  speed?: number;
+  slidesToShow?: number;
+  slidesToScroll?: number;
+};
+
+export type SeatType = {
+  index: string;
+  status?: "available" | "booked" | "selected" | "unavailable";
+};
