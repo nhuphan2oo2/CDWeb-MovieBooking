@@ -9,10 +9,13 @@ export default {
         tertiary: "#9E7676",
         quaternary: "#FFF8EA",
       },
+      boxShadow: {
+        // toast: "0px 4px 18px 0px #4B465C1A",
+      },
       animation: {
         "go-up": "go-up 0.2s ease-in-out",
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };

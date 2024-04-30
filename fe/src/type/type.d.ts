@@ -49,3 +49,10 @@ export type SeatType = {
 };
 
 export type seatStatus = "available" | "booked" | "selected" | "unavailable";
+
+export type UserType = {
+  name?: string;
+  birth?: string;
+  email?: string;
+  phone?: string;
+};

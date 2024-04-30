@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const CategoryBar = () => {
   return (
-    <div className="flex items-center justify-center py-2 mx-auto text-xl font-semibold text-black max-w-7xl gap-x-16">
+    <div className="flex items-center justify-center py-2 mx-auto text-[19px] font-semibold text-black max-w-7xl gap-x-16">
       <NavLink to="/">
         <div className="cursor-pointer category hover:text-white">
           Trang chủ

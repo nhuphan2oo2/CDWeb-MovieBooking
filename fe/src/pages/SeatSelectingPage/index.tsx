@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { Film, SeatType, seatStatus } from "../../type/type";
 import screen from "./assets/screen.png";
 import filmApi from "../../apis/filmApi";
