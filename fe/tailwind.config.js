@@ -14,6 +14,10 @@ export default {
       },
       animation: {
         "go-up": "go-up 0.2s ease-in-out",
+        "update-form-close": "update-form-close 0.4s ",
+        "update-form-open": "update-form-open 0.4s ",
+        "film-form-open": "film-form-open 0.5s ",
+        "film-form-close": "film-form-close 0.5s ",
       },
     },
   },

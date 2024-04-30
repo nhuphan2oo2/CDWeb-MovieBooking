@@ -7,7 +7,7 @@ const UserPage = () => {
   const [place, setPlace] = useState(menu[0]);
 
   return (
-    <div className="flex flex-col mx-auto max-w-7xl">
+    <div className="flex flex-col mx-auto mt-3 max-w-7xl">
       <div className="text-[35px] text-center">Tài khoản của tôi</div>
       <div className="w-20 h-[3px] mx-auto mt-4 mb-2 bg-primary rounded-md "></div>
       <div className="flex gap-10">

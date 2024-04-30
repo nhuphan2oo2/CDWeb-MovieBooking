@@ -28,28 +28,39 @@
 .active .category {
   @apply font-semibold text-white;
 }
-@keyframes update-form-visible {
+@keyframes update-form-open {
   0% {
-    transform: translateY(0%);
+    transform: translateY(-200px);
   }
   100% {
-    transform: translateY(50%);
+    transform: translateY(0);
   }
 }
-@keyframes update-form-invisible {
-  0% {
+@keyframes update-form-close {
+  from {
     transform: translateY(0%);
   }
-  100% {
-    transform: translateY(-50%);
+  to {
+    transform: translateY(-100vh);
   }
 }
-@keyframes film-detail {
-  0% {
-    transform: translateY(0%);
+@keyframes film-form-open {
+  from {
+    transform: translateY(-200px);
+    opacity: 0.9;
   }
-  100% {
-    transform: translateY(50%);
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes film-form-close {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100vh);
+    opacity: 0;
   }
 }
 #search::-webkit-search-cancel-button {

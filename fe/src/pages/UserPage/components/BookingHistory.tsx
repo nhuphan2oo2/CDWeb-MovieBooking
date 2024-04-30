@@ -78,21 +78,28 @@ const BookingHistory = () => {
   const [visibleForm, setVisibleForm] = useState(false);
   const [index, setIndex] = useState<number>(-1);
 
+  const handleCloseForm = () => {
+    document.querySelector("#form")?.classList.remove("animate-film-form-open");
+    document.querySelector("#form")?.classList.add("animate-film-form-close");
+    setTimeout(() => {
+      setVisibleForm(false);
+    }, 300);
+  };
   const modalClass = clsx(
-    "bg-gray-900 w-[550px] h-fit p-5 pt-0 rounded flex flex-col gap-3",
-    visibleForm ? "animate-detail-film" : "animate-detail-film"
+    "bg-quaternary w-[550px] h-fit p-5 pt-0 rounded  flex-col gap-3 ",
+    visibleForm ? " animate-film-form-open flex" : "hidden"
   );
   return (
-    <div className="flex flex-col w-3/4 gap-5 p-5">
+    <div className="flex flex-col w-3/4 gap-5 p-5 ">
       {visibleForm && (
         <div
           id={`detail-${index}`}
-          className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full overflow-hidden bg-opacity-50 bg-slate-600"
+          className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full overflow-hidden bg-opacity-50 bg-primary"
         >
-          <div className={modalClass}>
+          <div id="form" className={modalClass}>
             <div
               className="cursor-pointer text-end text-[30px]"
-              onClick={() => setVisibleForm(false)}
+              onClick={() => handleCloseForm()}
             >
               x
             </div>
@@ -102,9 +109,9 @@ const BookingHistory = () => {
               </div>
               <div>{films[index].name_vn}</div>
             </div>
-            <div className="w-full border border-gray-300 border-dashed"></div>
+            <div className="w-full border border-dashed border-secondary"></div>
             <div className="text-center ">14:15 - 18/04/2024</div>
-            <div className="w-full border border-gray-300 border-dashed"></div>
+            <div className="w-full border border-dashed border-secondary"></div>
 
             <div className="flex justify-between">
               <div>Số vé</div>
@@ -125,14 +132,14 @@ const BookingHistory = () => {
         <div className="text-[22px] font-light uppercase">
           Lịch sử giao dịch
         </div>
-        <div className=" bg-gray-900 h-[2px] rounded-md"></div>
+        <div className=" bg-primary h-[2px] rounded-md"></div>
       </div>
       <div className="flex flex-col gap-5">
         {films.map((film, index) => {
           return (
             <div
               key={index}
-              className="flex items-center justify-between py-2 pl-3 pr-4 mx-2 text-gray-900 bg-gray-200 rounded cursor-pointer hover:scale-[1.01] duration-150"
+              className="flex items-center justify-between py-2 pl-3 pr-4 mx-2 text-primary bg-gray-200 rounded cursor-pointer hover:scale-[1.01] duration-150"
             >
               <div className="flex items-center gap-2">
                 <img
