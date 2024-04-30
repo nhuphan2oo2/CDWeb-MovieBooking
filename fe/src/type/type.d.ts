@@ -45,5 +45,7 @@ export type Setting = {
 
 export type SeatType = {
   index: string;
-  status?: "available" | "booked" | "selected" | "unavailable";
+  status?: seatStatus;
 };
+
+export type seatStatus = "available" | "booked" | "selected" | "unavailable";
