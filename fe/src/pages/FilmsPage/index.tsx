@@ -4,19 +4,17 @@ import FilmCard from "../../components/FilmCard";
 import filmApi from "../../apis/filmApi";
 import { Film } from "../../type/type";
 
-const types = ["Phim đang chiếu", "Phim sắp chiếu"];
+const types = ["2", "1"];
 
 const FilmsPage = () => {
   const [films, setFilms] = useState<Film[]>([]);
-  const [type, setType] = useState<string>("Phim đang chiếu");
+  const [type, setType] = useState<string>("2");
 
   useEffect(() => {
     filmApi
-      .getAll("")
+      .getByType(type)
       .then((response) => {
-        type === types[0]
-          ? setFilms(response.data.pageProps.res.listMovie)
-          : setFilms(response.data.pageProps.res.listComingMovie);
+        setFilms(response.data);
       })
       .catch((error) => console.error(error));
   }, [type]);
@@ -34,7 +32,7 @@ const FilmsPage = () => {
                 onClick={() => setType(t)}
                 key={t}
               >
-                {t}
+                {t === "2" ? "Phim đang chiếu" : "Phim sắp chiếu"}
               </div>
             );
           })}
@@ -42,6 +40,7 @@ const FilmsPage = () => {
         <div className="flex flex-col items-center justify-center w-4/5 gap-6 py-5">
           <div className="grid w-full grid-cols-3 gap-8">
             {films.map((film) => {
+              console.log(film);
               return (
                 <Link to={`/film/${film.id}`}>
                   <FilmCard key={film.id} film={film} type={type} />

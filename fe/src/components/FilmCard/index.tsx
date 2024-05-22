@@ -21,7 +21,7 @@ const FilmCard: React.FC<FilmCardProps> = (props) => {
       <div className="relative overflow-hidden">
         <img className=" w-full h-[370px] mx-auto" src={film.image} />
         <div className="absolute bottom-0 left-0 hidden w-full py-4 bg-black animate-go-up group-hover/item:grid bg-opacity-70 place-items-center">
-          {type === "Phim đang chiếu" ? (
+          {type === "2" ? (
             <div className="flex flex-row gap-4">
               <div className="flex items-center justify-center h-10 gap-2 px-4 py-1 bg-green-300 rounded-md cursor-pointer hover:bg-green-500 w-fit">
                 <IoTicketOutline className="text-[20px]" />
@@ -46,7 +46,7 @@ const FilmCard: React.FC<FilmCardProps> = (props) => {
           {film.type_name_vn}
         </div>
         <div className="grid p-1 bg-green-300 border border-green-900 rounded cursor-pointer place-items-center ">
-          {film.formats_name_en}
+          {film.limitage_vn}
         </div>
       </div>
       <div className="flex items-center  px-2 h-20 text-[14px]">

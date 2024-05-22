@@ -8,20 +8,13 @@ const FilmDetailPage = () => {
   const [film, setFilm] = useState<Film>();
   useEffect(() => {
     window.scrollTo(0, 0);
-    filmApi
-      .get()
-      .then((response) =>
-        setFilm(
-          response.data.pageProps.res.listMovie.find(
-            (film: Film) => film.id === id
-          ) ||
-            response.data.pageProps.res.listComingMovie.find(
-              (film: Film) => film.id === id
-            )
-        )
-      )
-      .catch((error) => console.error(error));
+    id &&
+      filmApi
+        .get(id)
+        .then((response) => setFilm(response.data))
+        .catch((error) => console.error(error));
   }, [id]);
+
   console.log("film", film);
   return (
     <div>

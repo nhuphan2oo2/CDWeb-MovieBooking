@@ -5,9 +5,9 @@ import Banner from "./components/Banner";
 import FilmCard from "../../components/FilmCard";
 import { Film, Setting } from "../../type/type";
 import CustomSlider from "../../components/CustomSlider";
-import CategoryBar from "../../components/CategoryBar";
 
-const types = ["Phim đang chiếu", "Phim sắp chiếu"];
+const SHOWING_MOVIE = "2";
+const COMING_MOVIE = "1";
 
 const Homepage = () => {
   const [films, setFilms] = useState<Film[]>([]);
@@ -23,10 +23,15 @@ const Homepage = () => {
   };
   useEffect(() => {
     filmApi
-      .getAll("")
+      .getByType(SHOWING_MOVIE)
       .then((response) => {
-        setComingFilms(response.data.pageProps.res.listComingMovie);
-        setFilms(response.data.pageProps.res.listMovie);
+        setFilms(response.data);
+      })
+      .catch((error) => console.error(error));
+    filmApi
+      .getByType(COMING_MOVIE)
+      .then((response) => {
+        setComingFilms(response.data);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -48,7 +53,7 @@ const Homepage = () => {
                     className="mx-2"
                     key={film.id}
                     film={film}
-                    type={types[0]}
+                    type={SHOWING_MOVIE}
                   />
                 </Link>
               );
@@ -66,7 +71,7 @@ const Homepage = () => {
                     className="mx-2"
                     key={film.id}
                     film={film}
-                    type={types[1]}
+                    type={COMING_MOVIE}
                   />
                 </Link>
               );

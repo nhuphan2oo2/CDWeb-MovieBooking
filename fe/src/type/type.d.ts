@@ -1,5 +1,10 @@
+export type id = {
+  timestamp: number;
+  date: string;
+};
 export type Film = {
-  id?: string;
+  _id?: id;
+  id: string;
   name_vn?: string;
   name_en?: string;
   director?: string;
@@ -55,4 +60,5 @@ export type UserType = {
   birth?: string;
   email?: string;
   phone?: string;
+  password?: string;
 };

@@ -4,6 +4,8 @@ import { ToastContext } from "../../hooks/ToastMessage/ToastContext";
 const Register = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [birth, setBirth] = useState("2017-06-01");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isValidRegister, setIsValidRegister] = useState(false);
@@ -42,7 +44,25 @@ const Register = () => {
         }}
         className="p-2 bg-white border rounded border-line"
         type="text"
-        placeholder="Email (*)"
+        placeholder="Email"
+      />
+      <input
+        value={phone}
+        onChange={(e) => {
+          setPhone(e.target.value);
+        }}
+        className="p-2 bg-white border rounded border-line"
+        type="text"
+        placeholder="Số điện thoại (*)"
+      />
+      <input
+        value={birth}
+        onChange={(e) => {
+          setBirth(e.target.value);
+        }}
+        className="p-2 bg-white border rounded border-line"
+        type="date"
+        placeholder="Ngày sinh (*)"
       />
       <input
         value={password}

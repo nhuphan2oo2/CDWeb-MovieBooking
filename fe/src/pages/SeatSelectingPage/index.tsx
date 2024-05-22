@@ -55,13 +55,13 @@ const SeatSelectingPage = () => {
   const [film, setFilm] = useState<Film>();
 
   useEffect(() => {
-    filmApi
-      .getAll("")
-      .then((response) => {
-        let films: Film[] = response.data.pageProps.res.listMovie;
-        setFilm(films.find((f) => f.id === id));
-      })
-      .catch((error) => console.error(error));
+    id &&
+      filmApi
+        .get(id)
+        .then((response) => {
+          setFilm(response.data);
+        })
+        .catch((error) => console.error(error));
   }, []);
 
   const toggleSeat = (index: string, status: seatStatus | undefined) => {
