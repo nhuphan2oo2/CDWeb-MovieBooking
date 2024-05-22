@@ -3,7 +3,8 @@ package com.example.be.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "movies")
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -11,11 +12,16 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class Movies {
+@Table(name = "movies")
+public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @OneToMany(mappedBy = "movie")
+    private List<Image> images;
+    @OneToMany(mappedBy = "movie")
+    private List<ShowTime> showTimes;
     private String name_vn;
     private String director;
     private String actor;
@@ -31,7 +37,4 @@ public class Movies {
     private String time;
     private String limitage_vn;
     private int sort_order;
-
-
-
 }

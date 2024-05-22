@@ -1,6 +1,6 @@
 package com.example.be.services;
 
-import com.example.be.models.Movies;
+import com.example.be.models.Movie;
 import com.example.be.repositories.MoviesRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +15,15 @@ public class MoviesService {
     @Autowired
     private MoviesRepository moviesRepository;
 
-    public List<Movies> all() {
+    public List<Movie> all() {
         return moviesRepository.findAll();
     }
 
-    public Optional<Movies> singleMovie(int id) {
+    public Optional<Movie> singleMovie(int id) {
         return moviesRepository.findById(id);
     }
 
-    public List<Movies> getMoviesByType(String type){
+    public List<Movie> getMoviesByType(String type){
         return moviesRepository.findByStatus(type);
     }
 
