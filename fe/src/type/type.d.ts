@@ -1,5 +1,10 @@
+export type id = {
+  timestamp: number;
+  date: string;
+};
 export type Film = {
-  id?: string;
+  _id?: id;
+  id: string;
   name_vn?: string;
   name_en?: string;
   director?: string;
@@ -30,4 +35,30 @@ export type Film = {
   language_vn?: string;
   language_en?: string;
   sortorder?: string;
+};
+
+export type Setting = {
+  dots?: boolean;
+  arrows?: boolean;
+  infinite?: boolean;
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  speed?: number;
+  slidesToShow?: number;
+  slidesToScroll?: number;
+};
+
+export type SeatType = {
+  index: string;
+  status?: seatStatus;
+};
+
+export type seatStatus = "available" | "booked" | "selected" | "unavailable";
+
+export type UserType = {
+  name?: string;
+  birth?: string;
+  email?: string;
+  phone?: string;
+  password?: string;
 };

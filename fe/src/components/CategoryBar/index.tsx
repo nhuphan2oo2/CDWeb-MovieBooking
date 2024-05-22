@@ -2,24 +2,20 @@ import { NavLink } from "react-router-dom";
 
 const CategoryBar = () => {
   return (
-    <div className="max-w-7xl mx-auto flex items-center justify-center gap-x-16 text-xl text-white py-4">
+    <div className="flex items-center justify-center py-2 mx-auto text-[19px] font-semibold text-black max-w-7xl gap-x-16">
       <NavLink to="/">
-        <div className="category cursor-pointer hover:text-blue-500">
+        <div className="cursor-pointer category hover:text-white">
           Trang chủ
         </div>
       </NavLink>
       <NavLink to="/films">
-        <div className="category cursor-pointer hover:text-blue-500">Phim</div>
+        <div className="cursor-pointer category hover:text-white">Phim</div>
       </NavLink>
       <NavLink to="/">
-        <div className="category cursor-pointer hover:text-blue-500">
-          Sự kiện
-        </div>
+        <div className="cursor-pointer category hover:text-white">Sự kiện</div>
       </NavLink>
       <NavLink to="/">
-        <div className="category cursor-pointer hover:text-blue-500">
-          Liên hệ
-        </div>
+        <div className="cursor-pointer category hover:text-white">Liên hệ</div>
       </NavLink>
     </div>
   );

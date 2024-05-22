@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const AxiosClient = axios.create({
-  baseURL:
-    "https://cinestar.com.vn/_next/data/tIoj0NkX4uTafiFTekDQY/index.json",
+  baseURL: "http://localhost:8080/api",
   headers: {
     "Content-Type": "application/json",
   },
