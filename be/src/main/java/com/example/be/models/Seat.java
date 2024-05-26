@@ -1,7 +1,10 @@
 package com.example.be.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 
 @Entity
@@ -17,9 +20,11 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String seatIndex;
-    private String status;
+    private int status;
     @ManyToOne
     @JoinColumn(name = "screen_id",
             foreignKey = @ForeignKey(name = "fk_seats_screens"))
     private Screen screen;
+    @OneToMany(mappedBy = "seat")
+    private List<Ticket> tickets;
 }
