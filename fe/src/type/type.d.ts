@@ -1,10 +1,5 @@
-export type id = {
-  timestamp: number;
-  date: string;
-};
-export type Film = {
-  _id?: id;
-  id: string;
+export type Movie = {
+  id: number;
   name_vn?: string;
   name_en?: string;
   director?: string;
@@ -49,11 +44,11 @@ export type Setting = {
 };
 
 export type SeatType = {
-  index: string;
-  status?: seatStatus;
+  id?: number;
+  seatIndex?: string;
+  status?: number;
+  screen?: ScreenType;
 };
-
-export type seatStatus = "available" | "booked" | "selected" | "unavailable";
 
 export type UserType = {
   name?: string;
@@ -61,4 +56,18 @@ export type UserType = {
   email?: string;
   phone?: string;
   password?: string;
+};
+export type ShowTimeType = {
+  id?: number;
+  startTime?: string;
+  endTime?: string;
+  price?: number;
+  movie?: Movie;
+  screen?: ScreenType;
+  status?: number;
+};
+export type ScreenType = {
+  id?: number;
+  capacity?: number;
+  status?: number;
 };

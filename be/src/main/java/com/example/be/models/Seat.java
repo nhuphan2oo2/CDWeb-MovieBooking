@@ -21,6 +21,10 @@ public class Seat {
     private int id;
     private String seatIndex;
     private int status;
+//    available = 1,
+//  selected = 2,
+//  booked = 0,
+//  unavailable = 3,
     @ManyToOne
     @JoinColumn(name = "screen_id",
             foreignKey = @ForeignKey(name = "fk_seats_screens"))

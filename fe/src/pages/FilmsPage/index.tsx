@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FilmCard from "../../components/FilmCard";
-import filmApi from "../../apis/filmApi";
-import { Film } from "../../type/type";
+import { Movie } from "../../type/type";
+import movieApi from "../../apis/movieApi";
 
 const types = ["2", "1"];
 
 const FilmsPage = () => {
-  const [films, setFilms] = useState<Film[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [type, setType] = useState<string>("2");
 
   useEffect(() => {
-    filmApi
+    movieApi
       .getByType(type)
       .then((response) => {
-        setFilms(response.data);
+        setMovies(response.data);
       })
       .catch((error) => console.error(error));
   }, [type]);
@@ -39,11 +39,10 @@ const FilmsPage = () => {
         </div>
         <div className="flex flex-col items-center justify-center w-4/5 gap-6 py-5">
           <div className="grid w-full grid-cols-3 gap-8">
-            {films.map((film) => {
-              console.log(film);
+            {movies.map((movie) => {
               return (
-                <Link to={`/film/${film.id}`}>
-                  <FilmCard key={film.id} film={film} type={type} />
+                <Link to={`/movie/${movie.id}`}>
+                  <FilmCard key={movie.id} movie={movie} type={type} />
                 </Link>
               );
             })}

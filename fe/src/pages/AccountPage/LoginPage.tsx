@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import userApi from "../../apis/userApi";
 
 const Login = () => {
   const [userName, setUserName] = useState("");
@@ -11,7 +12,15 @@ const Login = () => {
     if (userName != "" && password != "") setIsValidLogin(true);
     else setIsValidLogin(false);
   }, [userName, password]);
-
+  const handleLogin = (userName: string, password: string) => {
+    userApi
+      .login(userName, password)
+      .then((response) => {
+        response.data === "success" && navigate("/");
+        localStorage.setItem("user", JSON.stringify(response.data));
+      })
+      .catch((error) => console.error(error));
+  };
   return (
     <div className="flex flex-col gap-y-3">
       <input
@@ -33,6 +42,7 @@ const Login = () => {
         placeholder="Mật khẩu (*)"
       />
       <button
+        onClick={() => handleLogin(userName, password)}
         disabled={!isValidLogin}
         className={`p-2 bg-primary rounded hover:brightness-110 text-white ${
           !isValidLogin && "!bg-gray-400"

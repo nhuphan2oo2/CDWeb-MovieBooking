@@ -2,7 +2,7 @@ package com.example.be.services;
 
 import com.example.be.models.Movie;
 import com.example.be.models.User;
-
+import com.example.be.repositories.MovieRepository;
 import com.example.be.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,9 @@ public class UserService {
     }
 
     public User get(int id) {
-        return userRepository.findById(id);
+        User user = userRepository.findById(id);
+//        user.setBookingHistories(null);
+        return user;
     }
 
     public User login(String email, String password) {

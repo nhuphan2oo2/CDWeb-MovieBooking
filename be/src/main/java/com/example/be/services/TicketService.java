@@ -19,16 +19,17 @@ public class TicketService {
     public Ticket add(Ticket ticket) {
         return ticketRepository.save(ticket);
     }
-    private Ticket clearTicket(Ticket ticket) {
+    public static Ticket clearTicket(Ticket ticket) {
         ticket.getShowTime().getMovie().setShowTimes(null);
         ticket.getSeat().setScreen(null);
         ticket.setBookingHistory(null);
         ticket.getShowTime().getScreen().setSeats(null);
         ticket.getShowTime().getScreen().setShowtimes(null);
+        ticket.getShowTime().setTickets(null);
         return ticket;
     }
 
-    private List<Ticket> clearTickets(List<Ticket> tickets) {
+    public static List<Ticket> clearTickets(List<Ticket> tickets) {
         for (Ticket ticket : tickets) {
             clearTicket(ticket);
         }

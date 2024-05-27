@@ -23,4 +23,6 @@ public class BookingHistoryController {
     ResponseEntity<BookingHistory> add(@RequestBody BookingHistory bookingHistory){
         return new ResponseEntity<>(bookingHistoryService.add(bookingHistory), HttpStatus.OK);
     }
+
+
 }

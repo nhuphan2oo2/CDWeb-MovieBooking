@@ -1,25 +1,40 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { useReducer, useState } from "react";
+import { SeatType } from "../../../type/type";
+import { SeatStatus } from "../../../enum";
+import seatApi from "../../../apis/seatApi";
+import { initState, reducer } from "../store";
 
 export interface SeatProps {
-  index?: string;
-  status?: "available" | "booked" | "selected" | "unavailable";
+  seat?: SeatType;
+  className?: string;
   onClick?: () => void;
 }
 const Seat: React.FC<SeatProps> = (props) => {
-  const { index, status, onClick } = props;
+  const { seat, onClick, className } = props;
 
   const [selected, setSelected] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initState);
 
   const handleSelect = () => {
-    if (status === "booked" || status === "unavailable") return;
+    // if (
+    //   seat?.status === SeatStatus.booked ||
+    //   seat?.status === SeatStatus.unavailable
+    // )
+    //   return;
+    // setSelected(!selected);
+    // seatApi.chooseSeat(seat?.id || -1).then((response) => {
+    //   console.log("choose seat", response.data);
+    //   dispatch({ type: "TOGGLE_SEAT", payload: seat });
+    // });
     setSelected(!selected);
   };
 
   const classes = clsx(
+    className,
     "h-7 select-none border border-black rounded-sm aspect-[1.05] text-[13px] flex items-center font-bold justify-center cursor-pointer",
-    status === "booked" ? "bg-red-400" : "",
-    status === "unavailable" ? "bg-gray-400" : "",
+    seat?.status === SeatStatus.booked ? "bg-red-400" : "",
+    seat?.status === SeatStatus.unavailable ? "bg-gray-400" : "",
     selected ? "bg-green-400" : ""
   );
 
@@ -31,7 +46,7 @@ const Seat: React.FC<SeatProps> = (props) => {
       }}
       className={classes}
     >
-      {index}
+      {seat?.seatIndex}
     </div>
   );
 };

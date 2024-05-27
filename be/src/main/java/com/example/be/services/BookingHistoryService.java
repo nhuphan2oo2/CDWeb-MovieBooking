@@ -2,8 +2,10 @@ package com.example.be.services;
 
 import com.example.be.models.BookingHistory;
 import com.example.be.models.Movie;
+import com.example.be.models.Seat;
 import com.example.be.models.Ticket;
 import com.example.be.repositories.BookingHistoryRepository;
+import com.example.be.repositories.SeatRepository;
 import com.example.be.repositories.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,19 +21,31 @@ public class BookingHistoryService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    @Autowired
+    private SeatRepository seatRepository;
+
     public BookingHistory singleBookingHistory(int id) {
         return clearBookingHistory(bookingHistoryRepository.findById(id));
     }
-//  Booking feature
+
+    //  Booking feature
     public BookingHistory add(BookingHistory bookingHistory) {
+        for (Ticket ticket : bookingHistory.getTickets()) {
+            Seat seat = seatRepository.findById(ticket.getSeat().getId());
+            seat.setStatus(0);
+            seatRepository.save(seat);
+        }
+        bookingHistory.setTime(LocalDateTime.now());
         BookingHistory bookingHistorySaved = bookingHistoryRepository.save(bookingHistory);
         for (Ticket ticket : bookingHistory.getTickets()) {
             ticket.setBookingHistory(bookingHistorySaved);
+
         }
         ticketRepository.saveAll(bookingHistory.getTickets());
-        for(Ticket ticket: bookingHistorySaved.getTickets()){
+        for (Ticket ticket : bookingHistorySaved.getTickets()) {
             ticket.setBookingHistory(null);
         }
+
         return bookingHistorySaved;
     }
 

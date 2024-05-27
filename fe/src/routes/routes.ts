@@ -1,21 +1,23 @@
 import AccountPage from "../pages/AccountPage";
 import ForgotPassPage from "../pages/AccountPage/FogotPassPage";
-import FilmDetailPage from "../pages/FilmDetailPage";
 import FilmsPage from "../pages/FilmsPage";
 import Homepage from "../pages/Homepage";
 import SearchPage from "../pages/SearchPage";
 import SeatSelectingPage from "../pages/SeatSelectingPage";
 import UserPage from "../pages/UserPage";
+import MovieDetailPage from "../pages/MovieDetailPage";
+import SuccessBookingPage from "../pages/BookingPage";
 
 const pathName = {
   homepage: "/",
   userPage: "/user",
   searchPage: "/search",
-  filmsPage: "/films",
-  filmPage: "/film/:id",
-  seatSelectingPage: "/seat-selecting/:id",
+  filmsPage: "/movies",
+  filmPage: "/movie/:id",
+  seatSelectingPage: "/seat-selecting",
   accountPage: "/account",
   forgotPassPage: "/forgot-password",
+  successBookingPage: "/success-booking",
 };
 
 const routes = [
@@ -23,10 +25,11 @@ const routes = [
   { path: pathName.userPage, element: UserPage },
   { path: pathName.searchPage, element: SearchPage },
   { path: pathName.filmsPage, element: FilmsPage },
-  { path: pathName.filmPage, element: FilmDetailPage },
+  { path: pathName.filmPage, element: MovieDetailPage },
   { path: pathName.seatSelectingPage, element: SeatSelectingPage },
   { path: pathName.accountPage, element: AccountPage },
   { path: pathName.forgotPassPage, element: ForgotPassPage },
+  { path: pathName.successBookingPage, element: SuccessBookingPage },
 ];
 
 export default routes;

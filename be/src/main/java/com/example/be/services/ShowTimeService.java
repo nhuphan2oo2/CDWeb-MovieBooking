@@ -1,6 +1,7 @@
 package com.example.be.services;
 
 import com.example.be.models.ShowTime;
+import com.example.be.models.Ticket;
 import com.example.be.repositories.ShowTimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,10 @@ import java.util.List;
 public class ShowTimeService {
     @Autowired
     private ShowTimeRepository showTimeRepository;
-    public ShowTime getById(int id){
+
+    public ShowTime getById(int id) {
         ShowTime result = showTimeRepository.findById(id);
-        return  clearShowTime(result);
+        return clearShowTime(result);
     }
 
     public List<ShowTime> getByMovieId(int id) {
@@ -29,6 +31,13 @@ public class ShowTimeService {
         showTime.getMovie().setShowTimes(null);
         showTime.getScreen().setSeats(null);
         showTime.getScreen().setShowtimes(null);
+        for (Ticket ticket : showTime.getTickets()) {
+            ticket.getShowTime().getMovie().setShowTimes(null);
+            ticket.getSeat().setScreen(null);
+            ticket.getSeat().setTickets(null);
+            ticket.setBookingHistory(null);
+            ticket.setShowTime(null);
+        }
         return showTime;
     }
 

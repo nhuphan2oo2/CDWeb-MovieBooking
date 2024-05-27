@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,9 +17,9 @@ public class SeatController {
     private SeatService seatService;
 
 
-    @GetMapping("/getByScreenId/{id}")
-    public ResponseEntity<List<Seat>> getSeatsByScreenId(@PathVariable int id) {
-        return new ResponseEntity<>(seatService.getSeatsByScreenId(id), HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<Seat>> getSeatsByScreenId(@RequestParam int screenId) {
+        return new ResponseEntity<>(seatService.getSeatsByScreenId(screenId), HttpStatus.OK);
     }
 
     @GetMapping("/chooseSeat/{id}")
@@ -43,5 +44,23 @@ public class SeatController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Seat> get(@PathVariable int id) {
+        return new ResponseEntity<>(seatService.get(id), HttpStatus.OK);
+    }
 
+    @PostMapping("/isBookingList")
+    public ResponseEntity<List<Seat>> chooseSeat(@RequestBody List<Seat> seats) {
+        List<Seat> seatBooked = new ArrayList<>();
+        for (Seat seat : seats) {
+            boolean checkSeat = seatService.checkSeatStatus(seat.getId(), 0);
+            if (checkSeat) {
+                seatBooked.add(seatService.get(seat.getId()));
+            }
+        }
+        if (seatBooked.size() > 0) {
+            return new ResponseEntity<>(seatBooked, HttpStatus.IM_USED);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 }
