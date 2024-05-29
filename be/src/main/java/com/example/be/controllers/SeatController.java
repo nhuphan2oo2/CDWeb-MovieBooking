@@ -48,7 +48,7 @@ public class SeatController {
     public ResponseEntity<Seat> get(@PathVariable int id) {
         return new ResponseEntity<>(seatService.get(id), HttpStatus.OK);
     }
-
+//  return seat list are booked
     @PostMapping("/isBookingList")
     public ResponseEntity<List<Seat>> chooseSeat(@RequestBody List<Seat> seats) {
         List<Seat> seatBooked = new ArrayList<>();

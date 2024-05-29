@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState } from "react";
 import { Movie, SeatType, ShowTimeType } from "../../type/type";
 import screen from "./assets/screen.png";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { formatCurrency } from "../../utils";
 import Seat from "./components/Seat";
 import { add, initState, reducer, remove } from "./store";
@@ -15,7 +15,6 @@ const SeatSelectingPage = () => {
   const [state, dispatch] = useReducer(reducer, initState);
   const [seats, setSeats] = useState<SeatType[]>([]);
   const location = useLocation();
-  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const movieId = searchParams.get("movieId");
   const showTimeId = searchParams.get("showTimeId");
@@ -65,7 +64,6 @@ const SeatSelectingPage = () => {
   };
   const handlePayment = (
     userId: number,
-    showTimeId: number,
     seats: SeatType[],
     discount: number,
     total: number
@@ -90,13 +88,25 @@ const SeatSelectingPage = () => {
         });
         return console.log(`Ghế ${bookedSeats.join(", ")} đã được đặt`);
       } else if (response.status === 200) {
-        bookingHistoryApi
-          .add(userId, showTimeId, seats, discount, total)
-          .then((response) => {
-            response.status === 200
-              ? navigate("/success-booking")
-              : alert("Lỗi trong quá trình đặt vé");
-          });
+        // bookingHistoryApi
+        //   .add(userId, showTimeId, seats, discount, total)
+        //   .then((response) => {
+        //     response.status === 200
+        //       ? navigate("/success-booking")
+        //       : alert("Lỗi trong quá trình đặt vé");
+        //   });
+
+        // save this booking to local storage
+        localStorage.setItem("movieId", JSON.stringify(movieId));
+        localStorage.setItem("showTimeId", JSON.stringify(showTimeId));
+        localStorage.setItem("seats", JSON.stringify(seats));
+        localStorage.setItem("discount", JSON.stringify(discount));
+        localStorage.setItem("total", JSON.stringify(total));
+
+        // payment
+        bookingHistoryApi.pay(total).then((response) => {
+          window.location.href = response.data;
+        });
       }
     });
   };
@@ -171,7 +181,6 @@ const SeatSelectingPage = () => {
           <button
             onClick={() =>
               handlePayment(
-                1,
                 1,
                 state.selectedSeats,
                 0,

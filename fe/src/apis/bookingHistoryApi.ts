@@ -10,6 +10,7 @@ const bookingHistoryApi = {
   //     const url = `/movies/${id}`;
   //     return AxiosClient.get(url);
   //   },
+
   add(
     userId: number,
     showTimeId: number,
@@ -29,17 +30,22 @@ const bookingHistoryApi = {
           },
           seat: {
             id: seat.id,
+            seatIndex: seat.seatIndex,
           },
         };
       }),
 
       discount: discount,
       total: total,
-      status: 0,
     };
-    console.log("body ", body);
+    localStorage.setItem("body", JSON.stringify(body));
+    console.log("thong tin dat >>>>", body);
 
     return AxiosClient.post(url, body);
+  },
+  pay(amount: number) {
+    const url = `/payment/create_payment?amount=${amount}`;
+    return AxiosClient.get(url);
   },
 };
 export default bookingHistoryApi;

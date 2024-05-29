@@ -7,6 +7,7 @@ import SeatSelectingPage from "../pages/SeatSelectingPage";
 import UserPage from "../pages/UserPage";
 import MovieDetailPage from "../pages/MovieDetailPage";
 import SuccessBookingPage from "../pages/BookingPage";
+import PaymentPage from "../pages/PaymentPage";
 
 const pathName = {
   homepage: "/",
@@ -18,6 +19,7 @@ const pathName = {
   accountPage: "/account",
   forgotPassPage: "/forgot-password",
   successBookingPage: "/success-booking",
+  paymentPage: "/redirect-payment",
 };
 
 const routes = [
@@ -30,6 +32,7 @@ const routes = [
   { path: pathName.accountPage, element: AccountPage },
   { path: pathName.forgotPassPage, element: ForgotPassPage },
   { path: pathName.successBookingPage, element: SuccessBookingPage },
+  { path: pathName.paymentPage, element: PaymentPage },
 ];
 
 export default routes;

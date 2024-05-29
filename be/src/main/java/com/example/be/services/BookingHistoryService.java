@@ -55,6 +55,7 @@ public class BookingHistoryService {
             ticket.setShowTime(null);
             ticket.setBookingHistory(null);
             ticket.getSeat().setScreen(null);
+            ticket.getSeat().setTickets(null);
         }
         return bookingHistory;
     }

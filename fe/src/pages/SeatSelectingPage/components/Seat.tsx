@@ -1,9 +1,7 @@
 import clsx from "clsx";
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import { SeatType } from "../../../type/type";
 import { SeatStatus } from "../../../enum";
-import seatApi from "../../../apis/seatApi";
-import { initState, reducer } from "../store";
 
 export interface SeatProps {
   seat?: SeatType;
@@ -14,7 +12,6 @@ const Seat: React.FC<SeatProps> = (props) => {
   const { seat, onClick, className } = props;
 
   const [selected, setSelected] = useState(false);
-  const [state, dispatch] = useReducer(reducer, initState);
 
   const handleSelect = () => {
     // if (
