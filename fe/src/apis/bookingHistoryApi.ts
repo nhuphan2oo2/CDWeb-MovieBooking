@@ -6,11 +6,10 @@ const bookingHistoryApi = {
   //     const url = "/movies";
   //     return AxiosClient.get(url, { params });
   //   },
-  //   get(id: string) {
-  //     const url = `/movies/${id}`;
-  //     return AxiosClient.get(url);
-  //   },
-
+  getByUserId(userId: number) {
+    const url = `/bookingHistories?userId=${userId}`;
+    return AxiosClient.get(url);
+  },
   add(
     userId: number,
     showTimeId: number,

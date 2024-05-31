@@ -89,7 +89,7 @@ const MovieDetailPage = () => {
                             key={showTime.id}
                             to={`/seat-selecting?movieId=${movie?.id}&showTimeId=${showTime.id}`}
                           >
-                            <div className="grid px-3 py-1 text-black border border-black rounded w-fit h-fit place-items-center bg-quaternary">
+                            <div className="grid px-3 py-1 text-white border rounded w-fit h-fit place-items-center bg-primary">
                               {showTime.startTime!.slice(11, 16)}
                             </div>
                           </NavLink>

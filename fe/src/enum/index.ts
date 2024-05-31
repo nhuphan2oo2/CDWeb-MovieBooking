@@ -4,3 +4,7 @@ export enum SeatStatus {
   booked = 0,
   unavailable = 3,
 }
+export enum UserRole {
+  admin = 1,
+  user = 0,
+}

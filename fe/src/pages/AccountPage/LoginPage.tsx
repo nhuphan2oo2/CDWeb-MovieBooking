@@ -1,32 +1,45 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userApi from "../../apis/userApi";
+import { UserRole } from "../../enum";
 
 const Login = () => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
   const [isValidLogin, setIsValidLogin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userName != "" && password != "") setIsValidLogin(true);
+    if (email != "" && password != "") setIsValidLogin(true);
     else setIsValidLogin(false);
-  }, [userName, password]);
-  const handleLogin = (userName: string, password: string) => {
+  }, [email, password]);
+  const handleLogin = () => {
     userApi
-      .login(userName, password)
+      .login(email!, password!)
       .then((response) => {
-        response.data === "success" && navigate("/");
-        localStorage.setItem("user", JSON.stringify(response.data));
+        if (response.data.id != null) {
+          if (response.data.role === UserRole.admin) {
+            navigate("/admin");
+            // response.data === "success" && navigate("/");
+            localStorage.setItem("user", JSON.stringify(response.data));
+            return;
+          }
+          if (response.data.role === UserRole.user) {
+            navigate("/");
+            // response.data === "success" && navigate("/");
+            localStorage.setItem("user", JSON.stringify(response.data));
+            return;
+          }
+        }
       })
       .catch((error) => console.error(error));
   };
   return (
     <div className="flex flex-col gap-y-3">
       <input
-        value={userName}
+        value={email}
         onChange={(e) => {
-          setUserName(e.target.value);
+          setEmail(e.target.value);
         }}
         className="p-2 bg-white border rounded border-line"
         type="text"
@@ -42,7 +55,7 @@ const Login = () => {
         placeholder="Mật khẩu (*)"
       />
       <button
-        onClick={() => handleLogin(userName, password)}
+        onClick={() => handleLogin()}
         disabled={!isValidLogin}
         className={`p-2 bg-primary rounded hover:brightness-110 text-white ${
           !isValidLogin && "!bg-gray-400"

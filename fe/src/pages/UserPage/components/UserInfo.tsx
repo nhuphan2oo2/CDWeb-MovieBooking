@@ -1,17 +1,26 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import clsx from "clsx";
 import { UserType } from "../../../type/type";
 import { save_change, initUser, userReducer } from "../store";
+import userApi from "../../../apis/userApi";
 
 const UserInfo = () => {
   const [user, dispatch] = useReducer(userReducer, initUser);
   const [tempUser, setTempUser] = useState<UserType>(user);
   const [visibleForm, setVisibleForm] = useState(false);
+  useEffect(() => {});
   const handleClickCancel = () => {
     setTempUser(user);
   };
-  const handleClickSave = () => {
+  const handleClickSave = (
+    name: string,
+    birth: string,
+    email: string,
+    phone: string
+  ) => {
+    birth = new Date(birth).toISOString();
     dispatch(save_change(tempUser));
+    userApi.update(user.id!, name, birth, email, phone);
   };
 
   const handleCloseForm = () => {
@@ -28,20 +37,20 @@ const UserInfo = () => {
   };
 
   const modalClass = clsx(
-    "bg-quaternary w-[550px] h-fit p-5 rounded flex-col gap-3 text-primary",
+    "bg-tertiary w-[550px] h-fit p-5 rounded flex-col gap-3 text-gray-800",
     visibleForm ? "animate-update-form-open flex" : "hidden "
   );
   return (
     <div className="flex flex-col w-3/4 gap-5 p-5">
       <div className="flex flex-col gap-3">
         <div className="text-[22px]  uppercase">Thông tin cá nhân</div>
-        <div className=" bg-primary h-[2px] rounded-md"></div>
+        <div className=" bg-tertiary h-[2px] rounded-md"></div>
       </div>
       <div className="flex flex-col gap-1 ">
-        <div>{user.name}</div>
-        <div>{user.birth}</div>
-        <div>{user.email}</div>
-        <div>{user.phone}</div>
+        <div>Họ tên: {user.name}</div>
+        <div>Sinh nhật: {user.birth?.slice(0, 10)}</div>
+        <div>Email: {user.email}</div>
+        <div>Số điện thoại: {user.phone}</div>
       </div>
       <div>
         <label
@@ -54,7 +63,7 @@ const UserInfo = () => {
         {visibleForm && (
           <div
             id="update-form"
-            className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-screen overflow-hidden bg-opacity-50 bg-primary"
+            className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-screen overflow-hidden bg-opacity-30 bg-tertiary"
           >
             <div id="form-user-info" className={modalClass}>
               <div className="mb-2 text-2xl text-center uppercase">
@@ -116,7 +125,12 @@ const UserInfo = () => {
                 </div>
                 <div
                   onClick={() => {
-                    handleClickSave();
+                    handleClickSave(
+                      tempUser.name!,
+                      tempUser.birth!,
+                      tempUser.email!,
+                      tempUser.phone!
+                    );
                     handleCloseForm();
                   }}
                   className="px-5 py-2 text-white rounded cursor-pointer bg-primary hover:bg-secondary"

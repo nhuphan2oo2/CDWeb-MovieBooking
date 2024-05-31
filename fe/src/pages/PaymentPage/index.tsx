@@ -12,16 +12,22 @@ const PaymentPage = () => {
   const total = JSON.parse(localStorage.getItem("total") || "{}");
   const discount = JSON.parse(localStorage.getItem("discount") || "{}");
   if (code === "00") {
-    window.location.href = "/";
+    window.location.href = "/success-booking";
     bookingHistoryApi.add(1, showTimeId, seats, discount, total);
-    localStorage.clear();
+    localStorage.removeItem("movieId");
+    localStorage.removeItem("showTimeId");
+    localStorage.removeItem("total");
+    localStorage.removeItem("discount");
     return;
   }
   window.location.href =
     "/seat-selecting?movieId=" + movieId + "&showTimeId=" + showTimeId;
   // bookingHistoryApi.add(1, showTimeId, seats, discount, total); // nen add vao 1 booking history fail
 
-  localStorage.clear();
+  localStorage.removeItem("movieId");
+  localStorage.removeItem("showTimeId");
+  localStorage.removeItem("total");
+  localStorage.removeItem("discount");
   return;
 };
 export default PaymentPage;

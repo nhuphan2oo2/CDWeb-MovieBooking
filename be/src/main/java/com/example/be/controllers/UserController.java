@@ -1,5 +1,6 @@
 package com.example.be.controllers;
 
+import com.example.be.models.BookingHistory;
 import com.example.be.models.User;
 import com.example.be.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +35,10 @@ public class UserController {
         return new ResponseEntity<>(userFind, HttpStatus.OK);
     }
 
+    @PutMapping("/update")
+    public User update(@RequestBody User user) {
+        User u = userService.get(user.getId());
+
+        return userService.update(user);
+    }
 }

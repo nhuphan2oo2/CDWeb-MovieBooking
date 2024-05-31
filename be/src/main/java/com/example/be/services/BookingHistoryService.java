@@ -66,4 +66,19 @@ public class BookingHistoryService {
         }
         return bookingHistoryList;
     }
+    public List<BookingHistory> getBookingHistoriesByUserId(int id){
+        List<BookingHistory> bookingHistories = bookingHistoryRepository.findByUserId(id);
+        for(BookingHistory bookingHistory: bookingHistories){
+            bookingHistory.setUser(null);
+            for(Ticket ticket: bookingHistory.getTickets()){
+                ticket.getShowTime().setTickets(null);
+                ticket.getShowTime().getMovie().setShowTimes(null);
+                ticket.getShowTime().setScreen(null);
+                ticket.setBookingHistory(null);
+                ticket.getSeat().setScreen(null);
+                ticket.getSeat().setTickets(null);
+            }
+        }
+        return bookingHistories;
+    }
 }

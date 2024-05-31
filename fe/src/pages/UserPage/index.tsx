@@ -1,11 +1,16 @@
 import { useState } from "react";
 import UserInfo from "./components/UserInfo";
 import BookingHistory from "./components/BookingHistory";
+import { useNavigate } from "react-router-dom";
 
 const menu = ["Thông tin cá nhân", "Lịch sử giao dịch", "Đăng xuất"];
 const UserPage = () => {
   const [place, setPlace] = useState(menu[0]);
-
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
   return (
     <div className="flex flex-col mx-auto mt-3 max-w-7xl">
       <div className="text-[35px] text-center">Tài khoản của tôi</div>
@@ -19,6 +24,18 @@ const UserPage = () => {
             <div className=" bg-primary h-[2px] rounded-md"></div>
           </div>
           {menu.map((item) => {
+            if (item === "Đăng xuất") {
+              return (
+                <div
+                  onClick={() => handleLogout()}
+                  className={`pl-5 text-lg duration-100 cursor-pointer text-primary hover:font-bold ${
+                    place === item ? " font-bold " : ""
+                  }`}
+                >
+                  {item}
+                </div>
+              );
+            }
             return (
               <div
                 onClick={() => setPlace(item)}

@@ -4,10 +4,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#594545",
-        secondary: "#815B5B",
-        tertiary: "#9E7676",
-        quaternary: "#FFF8EA",
+        // primary: "#594545",
+        // secondary: "#815B5B",
+        // tertiary: "#9E7676",
+        // quaternary: "#FFF8EA",
+        primary: "#4F6F52",
+        secondary: "#739072",
+        quaternary: "#739072",
+        tertiary: "#ECE3CE",
+        // quinary: "#F9EA83",
       },
       boxShadow: {
         // toast: "0px 4px 18px 0px #4B465C1A",

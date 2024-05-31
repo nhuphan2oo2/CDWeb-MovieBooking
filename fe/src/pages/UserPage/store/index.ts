@@ -1,11 +1,6 @@
 import { UserType } from "../../../type/type";
 
-export const initUser: UserType = {
-  name: "Phan Thi Quynh Nhu",
-  birth: "2002-12-31",
-  email: "qinhu@gmail.com",
-  phone: "0819555888",
-};
+export const initUser: UserType = JSON.parse(localStorage.getItem("user"));
 
 export const SAVE_CHANGE = "save_change";
 

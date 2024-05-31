@@ -1,7 +1,5 @@
 package com.example.be.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +22,7 @@ public class Movie {
     private List<Image> images;
     @OneToMany(mappedBy = "movie")
     private List<ShowTime> showTimes;
-    private String name_vn;
+    private String nameVn;
     private String director;
     private String actor;
     private String country_name_vn;
