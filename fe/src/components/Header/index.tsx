@@ -23,7 +23,6 @@ const Header = () => {
             placeholder="Tìm kiếm phim..."
             className="w-full px-3 py-1 text-lg leading-4 text-black outline-none placeholder:text-black placeholder:text-opacity-50 bg-tertiary"
           />
-
           <div className="pr-2 cursor-pointer hover:text-black">
             <IoSearch className=" text-[24px]" />
           </div>

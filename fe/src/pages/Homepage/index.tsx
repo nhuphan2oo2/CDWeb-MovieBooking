@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import filmApi from "../../apis/filmApi";
 import { Link } from "react-router-dom";
 import Banner from "./components/Banner";
 import FilmCard from "../../components/FilmCard";
-import { Film, Setting } from "../../type/type";
+import { Movie, Setting } from "../../type/type";
 import CustomSlider from "../../components/CustomSlider";
+import movieApi from "../../apis/movieApi";
 
 const SHOWING_MOVIE = "2";
 const COMING_MOVIE = "1";
 
 const Homepage = () => {
-  const [films, setFilms] = useState<Film[]>([]);
-  const [comingFilms, setComingFilms] = useState<Film[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [comingMovies, setComingMovies] = useState<Movie[]>([]);
 
   const settingsSlider: Setting = {
     arrows: true,
@@ -22,19 +22,23 @@ const Homepage = () => {
     slidesToShow: 4,
   };
   useEffect(() => {
-    filmApi
+    movieApi
       .getByType(SHOWING_MOVIE)
       .then((response) => {
-        setFilms(response.data);
+        setMovies(response.data);
+        console.log(" nehheh", response);
       })
       .catch((error) => console.error(error));
-    filmApi
+    movieApi
       .getByType(COMING_MOVIE)
       .then((response) => {
-        setComingFilms(response.data);
+        setComingMovies(response.data);
       })
       .catch((error) => console.error(error));
   }, []);
+  useEffect(() => {
+    console.log("movies", movies);
+  }, [movies]);
 
   return (
     <div className="">
@@ -43,16 +47,14 @@ const Homepage = () => {
       <div className="flex flex-col gap-10 mx-auto mt-10 max-w-7xl ">
         <div className="flex flex-col gap-3 ">
           <h1 className="text-3xl text-center ">PHIM ĐANG CHIẾU</h1>
-
           <CustomSlider
             settings={settingsSlider}
-            children={films.map((film) => {
+            children={movies.map((movie) => {
               return (
-                <Link to={`/film/${film.id}`}>
+                <Link key={movie.id} to={`/movie/${movie.id}`}>
                   <FilmCard
                     className="mx-2"
-                    key={film.id}
-                    film={film}
+                    movie={movie}
                     type={SHOWING_MOVIE}
                   />
                 </Link>
@@ -64,13 +66,12 @@ const Homepage = () => {
           <h1 className="text-3xl text-center ">PHIM SẮP CHIẾU</h1>
           <CustomSlider
             settings={settingsSlider}
-            children={comingFilms.map((film) => {
+            children={comingMovies.map((movie) => {
               return (
-                <Link to={`/film/${film.id}`}>
+                <Link to={`/movie/${movie.id}`}>
                   <FilmCard
                     className="mx-2"
-                    key={film.id}
-                    film={film}
+                    movie={movie}
                     type={COMING_MOVIE}
                   />
                 </Link>

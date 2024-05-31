@@ -1,7 +1,7 @@
 import axiosClient from "./AxiosClient";
 
-const filmApi = {
-  getAll: (params: any) => {
+const movieApi = {
+  getAll: (params?: string) => {
     const url = "/movies";
     return axiosClient.get(url, { params });
   },
@@ -14,4 +14,4 @@ const filmApi = {
     return axiosClient.get(url);
   },
 };
-export default filmApi;
+export default movieApi;

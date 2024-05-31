@@ -1,75 +1,114 @@
 import { useEffect, useReducer, useState } from "react";
-import { Film, SeatType, seatStatus } from "../../type/type";
+import { Movie, SeatType, ShowTimeType } from "../../type/type";
 import screen from "./assets/screen.png";
-import filmApi from "../../apis/filmApi";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { formatCurrency } from "../../utils";
 import Seat from "./components/Seat";
 import { add, initState, reducer, remove } from "./store";
+import movieApi from "../../apis/movieApi";
+import showTimeApi from "../../apis/showTimeApi";
+import seatApi from "../../apis/seatApi";
+import { SeatStatus } from "../../enum";
+import bookingHistoryApi from "../../apis/bookingHistoryApi";
 
 const SeatSelectingPage = () => {
   const [state, dispatch] = useReducer(reducer, initState);
+  const [seats, setSeats] = useState<SeatType[]>([]);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const movieId = searchParams.get("movieId");
+  const showTimeId = searchParams.get("showTimeId");
 
-  const [seats, setSeats] = useState<SeatType[]>([
-    { index: "A1", status: "available" },
-    { index: "A2", status: "booked" },
-    { index: "A3", status: "available" },
-    { index: "A4", status: "unavailable" },
-    { index: "A5", status: "available" },
-    { index: "A6", status: "booked" },
-    { index: "A7", status: "available" },
-    { index: "A8", status: "unavailable" },
-    { index: "A9", status: "available" },
-    { index: "A10", status: "booked" },
-    { index: "A11", status: "available" },
-    { index: "A12", status: "unavailable" },
-    { index: "A13", status: "available" },
-    { index: "A14", status: "booked" },
-    { index: "A15", status: "available" },
-    { index: "A16", status: "unavailable" },
-    { index: "A17", status: "available" },
-    { index: "A18", status: "booked" },
-    { index: "A19", status: "available" },
-    { index: "A20", status: "unavailable" },
-    { index: "A21", status: "available" },
-    { index: "A22", status: "booked" },
-    { index: "A23", status: "available" },
-    { index: "A24", status: "unavailable" },
-    { index: "A25", status: "available" },
-    { index: "A26", status: "booked" },
-    { index: "A27", status: "available" },
-    { index: "A28", status: "unavailable" },
-    { index: "A29", status: "available" },
-    { index: "A30", status: "booked" },
-    { index: "A31", status: "available" },
-    { index: "A32", status: "unavailable" },
-    { index: "A33", status: "available" },
-    { index: "A34", status: "booked" },
-    { index: "A35", status: "available" },
-    { index: "A36", status: "unavailable" },
-    { index: "A37", status: "available" },
-  ]);
-  const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
-  const { id } = useParams();
-
-  const [film, setFilm] = useState<Film>();
+  const [movie, setMovie] = useState<Movie>();
+  const [showTime, setShowTime] = useState<ShowTimeType>();
 
   useEffect(() => {
-    id &&
-      filmApi
-        .get(id)
+    movieId &&
+      movieApi
+        .get(movieId)
         .then((response) => {
-          setFilm(response.data);
+          setMovie(response.data);
         })
         .catch((error) => console.error(error));
-  }, []);
+    showTimeId &&
+      showTimeApi
+        .get(showTimeId)
+        .then((response) => {
+          setShowTime(() => response.data);
+        })
+        .catch((error) => console.error(error));
+    showTimeId &&
+      seatApi
+        .getByScreenId(showTime?.screen?.id || -1)
+        .then((response) => setSeats(response.data))
+        .catch((error) => console.error(error));
+  }, [movieId, showTime?.screen?.id, showTimeId]);
 
-  const toggleSeat = (index: string, status: seatStatus | undefined) => {
-    if (status === "booked" || status === "unavailable") return;
+  const toggleSeat = (seat: SeatType) => {
+    if (
+      seat.status == SeatStatus.booked ||
+      seat.status == SeatStatus.unavailable
+    )
+      return;
+    if (
+      state.selectedSeats.find((selectedSeat) => selectedSeat.id === seat.id)
+    ) {
+      dispatch(remove(seat));
+    } else {
+      seatApi.get(seat.id!).then((response) => {
+        if (response.data.status === SeatStatus.booked)
+          return alert(`Ghế ${seat.seatIndex} đã được đặt`);
+      });
+      dispatch(add(seat));
+    }
+  };
+  const handlePayment = (
+    userId: number,
+    seats: SeatType[],
+    discount: number,
+    total: number
+  ) => {
+    if (!userId) return alert("Vui lòng đăng nhập để đặt vé");
+    if (seats.length === 0) return alert("Vui lòng chọn ghế");
+    seatApi.isBookingList(state.selectedSeats).then((response) => {
+      if (response.status === 226) {
+        const bookedSeats: SeatType[] = response.data;
+        alert(
+          `Ghế ${bookedSeats
+            ?.map((seat) => seat.seatIndex)
+            .join(", ")} đã được đặt`
+        );
+        bookedSeats.forEach((bookedSeat: SeatType) => {
+          seats.forEach((seat) => {
+            if (seat.id === bookedSeat.id) {
+              seat.status = SeatStatus.booked;
+              dispatch(remove(seat));
+            }
+          });
+        });
+        return console.log(`Ghế ${bookedSeats.join(", ")} đã được đặt`);
+      } else if (response.status === 200) {
+        // bookingHistoryApi
+        //   .add(userId, showTimeId, seats, discount, total)
+        //   .then((response) => {
+        //     response.status === 200
+        //       ? navigate("/success-booking")
+        //       : alert("Lỗi trong quá trình đặt vé");
+        //   });
 
-    state.selectedSeats.includes(index)
-      ? dispatch(remove(index))
-      : dispatch(add(index));
+        // save this booking to local storage
+        localStorage.setItem("movieId", JSON.stringify(movieId));
+        localStorage.setItem("showTimeId", JSON.stringify(showTimeId));
+        localStorage.setItem("seats", JSON.stringify(seats));
+        localStorage.setItem("discount", JSON.stringify(discount));
+        localStorage.setItem("total", JSON.stringify(total));
+
+        // payment
+        bookingHistoryApi.pay(total).then((response) => {
+          window.location.href = response.data;
+        });
+      }
+    });
   };
 
   return (
@@ -82,14 +121,14 @@ const SeatSelectingPage = () => {
             <img src={screen} className="w-2/3" alt="" />
           </div>
           <div className="grid grid-cols-12 gap-1">
-            {seats.map((seat, index) => {
-              let letter = letters[Math.floor(index / 12)];
-              index >= 12 ? (index = index % 12) : (index = index);
+            {seats.map((seat) => {
               return (
                 <Seat
-                  onClick={() => toggleSeat(letter + (index + 1), seat.status)}
-                  index={letter + (index + 1)}
-                  status={seat.status}
+                  key={seat.id}
+                  onClick={() => {
+                    toggleSeat(seat);
+                  }}
+                  seat={seat}
                 />
               );
             })}
@@ -114,14 +153,24 @@ const SeatSelectingPage = () => {
           </div>
         </div>
         <div className="flex flex-col w-1/3 border rounded text-primary border-primary">
-          <div className="py-3 px-5 border-b border-primary text-[18px]">
-            Screen 3 - 5/4/2024 - Suất chiếu: 20h15
+          <div className="py-3 px-5 border-b border-primary text-[18px] flex flex-col">
+            <p>
+              Screen {showTime?.screen?.id} -
+              <strong> {showTime?.startTime?.slice(0, 10)}</strong>
+            </p>
+            <span>
+              Suất chiếu: <strong>{showTime?.startTime?.slice(11, 16)}</strong>
+            </span>
           </div>
           <div className="flex flex-col px-5 py-3 border-b border-primary">
-            <div className="text-[20px] font-bold">{film?.name_vn}</div>
+            <div className="text-[20px] font-bold">{movie?.name_vn}</div>
             <div>{state.selectedSeats.length} vé</div>
             <div className="flex items-center justify-between">
-              <div className="w-1/2">{state.selectedSeats.join(", ")}</div>
+              <div className="w-1/2">
+                {state.selectedSeats
+                  .map((selectedSeat) => selectedSeat.seatIndex)
+                  .join(", ")}
+              </div>
               <div>{formatCurrency(50000 * state.selectedSeats.length)}</div>
             </div>
           </div>
@@ -129,7 +178,17 @@ const SeatSelectingPage = () => {
             <div className="">Tổng tiền</div>
             <div>{formatCurrency(50000 * state.selectedSeats.length)}</div>
           </div>
-          <button className="py-3 text-[18px] uppercase mx-5 text-white rounded bg-primary">
+          <button
+            onClick={() =>
+              handlePayment(
+                1,
+                state.selectedSeats,
+                0,
+                50000 * state.selectedSeats.length
+              )
+            }
+            className="py-3 text-[18px] uppercase mx-5 text-white rounded bg-primary"
+          >
             Thanh toán
           </button>
           <a
