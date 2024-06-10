@@ -1,38 +1,28 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import userApi from "../../apis/userApi";
-import { UserRole } from "../../enum";
+import loginApi from "../../apis/loginApi";
+import { ToastContext } from "../../hooks/ToastMessage/ToastContext";
 
 const Login = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [isValidLogin, setIsValidLogin] = useState(false);
   const navigate = useNavigate();
+  const toastContext = useContext(ToastContext);
 
   useEffect(() => {
     if (email != "" && password != "") setIsValidLogin(true);
     else setIsValidLogin(false);
   }, [email, password]);
-  const handleLogin = () => {
-    userApi
-      .login(email!, password!)
-      .then((response) => {
-        if (response.data.id != null) {
-          if (response.data.role === UserRole.admin) {
-            navigate("/admin");
-            // response.data === "success" && navigate("/");
-            localStorage.setItem("user", JSON.stringify(response.data));
-            return;
-          }
-          if (response.data.role === UserRole.user) {
-            navigate("/");
-            // response.data === "success" && navigate("/");
-            localStorage.setItem("user", JSON.stringify(response.data));
-            return;
-          }
-        }
-      })
-      .catch((error) => console.error(error));
+
+  const handleLogin = async () => {
+    const res = await loginApi(email!, password!);
+    if (res.success) {
+      res.user.role === 1 ? navigate("/admin") : navigate("/");
+      toastContext.showToast("Login successfully!");
+    } else {
+      toastContext.showToast(res.message);
+    }
   };
   return (
     <div className="flex flex-col gap-y-3">
@@ -42,7 +32,8 @@ const Login = () => {
           setEmail(e.target.value);
         }}
         className="p-2 bg-white border rounded border-line"
-        type="text"
+        type="email"
+        required
         placeholder="Email hoặc số điện thoại (*)"
       />
       <input
@@ -52,6 +43,7 @@ const Login = () => {
         }}
         className="p-2 bg-white border rounded border-line"
         type="password"
+        required
         placeholder="Mật khẩu (*)"
       />
       <button

@@ -1,18 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AccountsManagePage from "./AccountsManagePage";
 import ReportPage from "./report";
 import ShowtimesManagePage from "./ShowtimeManagePage";
 import MoviesManagePage from "./OrdersManagePage";
 import ScreensManagePage from "./ScreensManagePage";
+import { UserType } from "../../type/type";
+import { getUserFromSession } from "../../utils/User";
+import { ToastContext } from "../../hooks/ToastMessage/ToastContext";
 const AdminDashboard = () => {
   const navigate = useNavigate();
-
-  function navigateTo(link: string) {
-    navigate(link);
-  }
-
+  const [user, setUser] = useState<UserType>();
+  const toastContext = useContext(ToastContext);
   const tabs = [
     "Báo cáo thu nhập",
     "Quản lý lịch chiếu",
@@ -22,13 +21,25 @@ const AdminDashboard = () => {
     "Đăng xuất",
   ];
   const [tabActive, setTabActive] = useState(tabs[0]);
+
+  useEffect(() => {
+    const u = getUserFromSession();
+    setUser(() => (u ? u : undefined));
+    u.role !== 1 && navigate("/");
+  }, [user]);
+
   const handleClickTab = (tab: string) => {
     setTabActive(tab);
   };
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
     navigate("/account");
   };
+
+  if (user?.role !== 1) {
+    toastContext.showToast("Bạn không có quyền truy cập vào trang này");
+    return;
+  }
 
   return (
     <div className="flex w-full">

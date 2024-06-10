@@ -76,7 +76,7 @@ const SearchBar = () => {
           to={"/search?query=" + query}
           className={`${
             showForm && results.length > 3 ? "block py-1" : "hidden"
-          }  text-center  bg-tertiary hover:opacity-70`}
+          }  text-center text-gray-900 bg-tertiary hover:opacity-70`}
         >
           Xem tất cả
         </Link>

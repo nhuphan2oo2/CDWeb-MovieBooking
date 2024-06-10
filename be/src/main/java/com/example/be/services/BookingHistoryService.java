@@ -30,23 +30,39 @@ public class BookingHistoryService {
 
     //  Booking feature
     public BookingHistory add(BookingHistory bookingHistory) {
-        for (Ticket ticket : bookingHistory.getTickets()) {
-            Seat seat = seatRepository.findById(ticket.getSeat().getId());
-            seat.setStatus(0);
-            seatRepository.save(seat);
-        }
         bookingHistory.setTime(LocalDateTime.now());
-        BookingHistory bookingHistorySaved = bookingHistoryRepository.save(bookingHistory);
-        for (Ticket ticket : bookingHistory.getTickets()) {
-            ticket.setBookingHistory(bookingHistorySaved);
+        if (bookingHistory.getStatus() == BookingHistory.FAILED) {
+            for (Ticket ticket : bookingHistory.getTickets()) {
+                Seat seat = seatRepository.findById(ticket.getSeat().getId());
+                seat.setStatus(1);
+                seatRepository.save(seat);
+            }
+            BookingHistory bookingHistorySaved = bookingHistoryRepository.save(bookingHistory);
+            for (Ticket ticket : bookingHistory.getTickets()) {
+                ticket.setBookingHistory(bookingHistorySaved);
+            }
+            ticketRepository.saveAll(bookingHistory.getTickets());
+            for (Ticket ticket : bookingHistorySaved.getTickets()) {
+                ticket.setBookingHistory(null);
+            }
+            return bookingHistorySaved;
 
+        } else {
+            for (Ticket ticket : bookingHistory.getTickets()) {
+                Seat seat = seatRepository.findById(ticket.getSeat().getId());
+                seat.setStatus(0);
+                seatRepository.save(seat);
+            }
+            BookingHistory bookingHistorySaved = bookingHistoryRepository.save(bookingHistory);
+            for (Ticket ticket : bookingHistory.getTickets()) {
+                ticket.setBookingHistory(bookingHistorySaved);
+            }
+            ticketRepository.saveAll(bookingHistory.getTickets());
+            for (Ticket ticket : bookingHistorySaved.getTickets()) {
+                ticket.setBookingHistory(null);
+            }
+            return bookingHistorySaved;
         }
-        ticketRepository.saveAll(bookingHistory.getTickets());
-        for (Ticket ticket : bookingHistorySaved.getTickets()) {
-            ticket.setBookingHistory(null);
-        }
-
-        return bookingHistorySaved;
     }
 
     private BookingHistory clearBookingHistory(BookingHistory bookingHistory) {
@@ -66,11 +82,12 @@ public class BookingHistoryService {
         }
         return bookingHistoryList;
     }
-    public List<BookingHistory> getBookingHistoriesByUserId(int id){
+
+    public List<BookingHistory> getBookingHistoriesByUserId(int id) {
         List<BookingHistory> bookingHistories = bookingHistoryRepository.findByUserId(id);
-        for(BookingHistory bookingHistory: bookingHistories){
+        for (BookingHistory bookingHistory : bookingHistories) {
             bookingHistory.setUser(null);
-            for(Ticket ticket: bookingHistory.getTickets()){
+            for (Ticket ticket : bookingHistory.getTickets()) {
                 ticket.getShowTime().setTickets(null);
                 ticket.getShowTime().getMovie().setShowTimes(null);
                 ticket.getShowTime().setScreen(null);

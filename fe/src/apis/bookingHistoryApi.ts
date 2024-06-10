@@ -15,7 +15,8 @@ const bookingHistoryApi = {
     showTimeId: number,
     seats: SeatType[],
     discount: number,
-    total: number
+    total: number,
+    status: number
   ) {
     const url = `/bookingHistories`;
     const body = {
@@ -33,13 +34,11 @@ const bookingHistoryApi = {
           },
         };
       }),
-
       discount: discount,
       total: total,
+      status: status,
     };
     localStorage.setItem("body", JSON.stringify(body));
-    console.log("thong tin dat >>>>", body);
-
     return AxiosClient.post(url, body);
   },
   pay(amount: number) {

@@ -1,6 +1,6 @@
 import { UserType } from "../../../type/type";
 
-export const initUser: UserType = JSON.parse(localStorage.getItem("user"));
+export const initUser: UserType = {} as UserType;
 
 export const SAVE_CHANGE = "save_change";
 

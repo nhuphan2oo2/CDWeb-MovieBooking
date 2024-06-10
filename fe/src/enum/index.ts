@@ -8,3 +8,8 @@ export enum UserRole {
   admin = 1,
   user = 0,
 }
+export enum BookingStatus {
+  pending = 0,
+  success = 1,
+  cancel = 2,
+}

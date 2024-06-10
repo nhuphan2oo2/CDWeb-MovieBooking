@@ -49,10 +49,10 @@ const MovieDetailPage = () => {
             </div>
             <div className="flex flex-col w-3/4 gap-5">
               <div className="pb-1 text-3xl border-b-2 w-fit">
-                {movie.name_vn}
+                {movie.nameVn}
               </div>
               <div className="flex flex-col w-4/5 gap-1 pb-5 border-b border-gray-400">
-                <div>{movie.type_name_vn + " - " + movie.formats_name_vn}</div>
+                <div>Thể loại: {movie.type_name_vn}</div>
                 <div>Đạo diễn:{" " + movie.director}</div>
                 <div>Ngày chiếu:{" " + movie.release_date}</div>
                 <div>Diễn viên:{" " + movie.actor}</div>
@@ -65,7 +65,11 @@ const MovieDetailPage = () => {
           </div>
         )}
         <div className="flex flex-col gap-2 px-20 py-4">
-          <div className="pb-1 text-3xl uppercase border-b-2 border-gray-500 w-fit">
+          <div
+            className={`pb-1 text-3xl uppercase border-b-2 border-gray-500 w-fit ${
+              movie?.status === "1" ? "hidden" : ""
+            }`}
+          >
             Lịch chiếu
           </div>
           <div className="flex flex-col justify-center gap-6 p-4">

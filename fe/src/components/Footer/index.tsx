@@ -1,10 +1,10 @@
 const Footer = () => {
   return (
-    <footer className="mt-10 bg-primary">
+    <footer className="mt-10 text-gray-200 bg-primary">
       <div className="w-full max-w-screen-xl mx-auto">
         <div className="grid grid-cols-2 gap-8 px-4 py-6 justify-items-center lg:py-8 md:grid-cols-4">
           <div>
-            <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">
+            <h2 className="mb-6 text-sm font-semibold text-gray-200 uppercase">
               Company
             </h2>
             <ul className="font-medium ">
@@ -31,7 +31,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">
+            <h2 className="mb-6 text-sm font-semibold text-gray-200 uppercase">
               Help center
             </h2>
             <ul className="font-medium">
@@ -58,7 +58,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">
+            <h2 className="mb-6 text-sm font-semibold text-gray-200 uppercase">
               Legal
             </h2>
             <ul className="font-medium">
@@ -80,7 +80,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">
+            <h2 className="mb-6 text-sm font-semibold text-gray-200 uppercase">
               Download
             </h2>
             <ul className="font-medium ">

@@ -1,6 +1,6 @@
 import AccountPage from "../pages/AccountPage";
 import ForgotPassPage from "../pages/AccountPage/FogotPassPage";
-import FilmsPage from "../pages/FilmsPage";
+import FilmsPage from "../pages/MoviesPage";
 import Homepage from "../pages/Homepage";
 import SearchPage from "../pages/SearchPage";
 import SeatSelectingPage from "../pages/SeatSelectingPage";

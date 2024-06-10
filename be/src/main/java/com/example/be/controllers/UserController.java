@@ -27,13 +27,24 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user) {
+    ResponseEntity<ResponseObject> login(@RequestBody User user) {
         User userFind = userService.login(user.getEmail(), user.getPassword());
-        if (userFind == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(userFind, HttpStatus.OK);
+        return userFind != null ?
+                ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("ok", "Login successful", userFind)
+                ) :
+                ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("failed", "Invalid username or password", "")
+                );
     }
+//    @PostMapping("/login")
+//    public ResponseEntity<User> login(@RequestBody User user) {
+//        User userFind = userService.login(user.getEmail(), user.getPassword());
+//        if (userFind == null) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//        return new ResponseEntity<>(userFind, HttpStatus.OK);
+//    }
 
     @PutMapping("/update")
     public User update(@RequestBody User user) {

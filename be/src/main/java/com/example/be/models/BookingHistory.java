@@ -17,6 +17,9 @@ import java.util.List;
 @ToString
 @Table(name = "booking_histories")
 public class BookingHistory {
+    public static final int PENDING = 0;
+    public static final int SUCCESS = 1;
+    public static final int FAILED = 2;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

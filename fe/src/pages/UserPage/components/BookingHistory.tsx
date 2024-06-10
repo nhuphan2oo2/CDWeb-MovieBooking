@@ -1,30 +1,26 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { BookingType, Movie, TicketType } from "../../../type/type";
+import { BookingType, UserType } from "../../../type/type";
 import bookingHistoryApi from "../../../apis/bookingHistoryApi";
+import { getUserFromSession } from "../../../utils/User";
+import { BookingStatus } from "../../../enum";
 
 const BookingHistory = () => {
   const [bookingHistories, setBookingHistories] = useState<BookingType[]>([]);
   const [visibleForm, setVisibleForm] = useState(false);
   const [index, setIndex] = useState<number>(-1);
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [tickets, setTickets] = useState<TicketType[]>([]);
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const [user, setUser] = useState<UserType>();
 
   useEffect(() => {
-    bookingHistoryApi.getByUserId(user.id).then((response) => {
-      setBookingHistories(response.data);
-    });
+    setUser(getUserFromSession());
   }, []);
+
   useEffect(() => {
-    bookingHistories.map((booking) => {
-      console.log(24);
-      setTickets(booking.tickets);
-    });
-  }, []);
-  useEffect(() => {
-    console.log("egg", tickets);
-  }, [index]);
+    user?.id &&
+      bookingHistoryApi.getByUserId(user.id).then((response) => {
+        setBookingHistories(response.data);
+      });
+  }, [user?.id, bookingHistories.length]);
 
   const handleCloseForm = () => {
     document.querySelector("#form")?.classList.remove("animate-film-form-open");
@@ -38,7 +34,7 @@ const BookingHistory = () => {
     visibleForm ? " animate-film-form-open flex" : "hidden"
   );
   return (
-    <div className="flex flex-col w-3/4 gap-5 p-5 ">
+    <div className="flex flex-col w-4/5 gap-5 p-5 ">
       {visibleForm && (
         <div
           id={`detail-${index}`}
@@ -118,7 +114,18 @@ const BookingHistory = () => {
                 />
                 <div className="w-80">{movie?.nameVn}</div>
               </div>
-
+              <div
+                className={`${
+                  Number.parseInt(movie?.status || "-1") ===
+                  BookingStatus.cancel
+                    ? "text-red-500"
+                    : "text-green-400"
+                }`}
+              >
+                {Number.parseInt(movie?.status || "-1") === BookingStatus.cancel
+                  ? "Đã hủy"
+                  : "Thành công"}
+              </div>
               <div>
                 {" "}
                 {bookingHistorie.time.slice(11, 16).replaceAll("-", "/")}

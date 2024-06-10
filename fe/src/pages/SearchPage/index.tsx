@@ -20,7 +20,7 @@ const SearchPage = () => {
         setResults([]);
       }
     }
-  }, []);
+  }, [query]);
   return (
     <div className="flex flex-col gap-5 py-5 mx-auto max-w-7xl">
       <div className="text-[40px] text-center">Kết quả tìm kiếm</div>

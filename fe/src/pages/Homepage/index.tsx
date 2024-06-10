@@ -26,7 +26,6 @@ const Homepage = () => {
       .getByType(SHOWING_MOVIE)
       .then((response) => {
         setMovies(response.data);
-        console.log(" nehheh", response);
       })
       .catch((error) => console.error(error));
     movieApi
@@ -36,9 +35,6 @@ const Homepage = () => {
       })
       .catch((error) => console.error(error));
   }, []);
-  useEffect(() => {
-    console.log("movies", movies);
-  }, [movies]);
 
   return (
     <div className="">
@@ -68,7 +64,7 @@ const Homepage = () => {
             settings={settingsSlider}
             children={comingMovies.map((movie) => {
               return (
-                <Link to={`/movie/${movie.id}`}>
+                <Link key={movie.id} to={`/movie/${movie.id}`}>
                   <FilmCard
                     className="mx-2"
                     movie={movie}
