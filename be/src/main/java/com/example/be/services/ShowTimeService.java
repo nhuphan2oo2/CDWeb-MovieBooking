@@ -29,11 +29,11 @@ public class ShowTimeService {
 
     private ShowTime clearShowTime(ShowTime showTime) {
         showTime.getMovie().setShowTimes(null);
-        showTime.getScreen().setSeats(null);
-        showTime.getScreen().setShowtimes(null);
+        showTime.getScreenShowTime().setSeats(null);
+        showTime.getScreenShowTime().getScreen().setScreenShowTimes(null);
         for (Ticket ticket : showTime.getTickets()) {
             ticket.getShowTime().getMovie().setShowTimes(null);
-            ticket.getSeat().setScreen(null);
+            ticket.getSeat().setScreenShowTime(null);
             ticket.getSeat().setTickets(null);
             ticket.setBookingHistory(null);
             ticket.setShowTime(null);
@@ -46,6 +46,9 @@ public class ShowTimeService {
             clearShowTime(showTime);
         }
         return showTimes;
+    }
+    public List<ShowTime> getAll(){
+        return clearShowTimes(showTimeRepository.findAll());
     }
 
 }

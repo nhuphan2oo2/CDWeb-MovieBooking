@@ -21,10 +21,10 @@ public class TicketService {
     }
     public static Ticket clearTicket(Ticket ticket) {
         ticket.getShowTime().getMovie().setShowTimes(null);
-        ticket.getSeat().setScreen(null);
-        ticket.setBookingHistory(null);
-        ticket.getShowTime().getScreen().setSeats(null);
-        ticket.getShowTime().getScreen().setShowtimes(null);
+//        ticket.getSeat().setScreen(null);
+//        ticket.setBookingHistory(null);
+//        ticket.getShowTime().getScreen().setSeats(null);
+//        ticket.getShowTime().getScreen().setShowtimes(null);
         ticket.getShowTime().setTickets(null);
         return ticket;
     }

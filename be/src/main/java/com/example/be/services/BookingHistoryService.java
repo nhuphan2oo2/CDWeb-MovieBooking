@@ -70,7 +70,7 @@ public class BookingHistoryService {
         for (Ticket ticket : bookingHistory.getTickets()) {
             ticket.setShowTime(null);
             ticket.setBookingHistory(null);
-            ticket.getSeat().setScreen(null);
+//            ticket.getSeat().setScreen(null);
             ticket.getSeat().setTickets(null);
         }
         return bookingHistory;
@@ -90,10 +90,10 @@ public class BookingHistoryService {
             for (Ticket ticket : bookingHistory.getTickets()) {
                 ticket.getShowTime().setTickets(null);
                 ticket.getShowTime().getMovie().setShowTimes(null);
-                ticket.getShowTime().setScreen(null);
-                ticket.setBookingHistory(null);
-                ticket.getSeat().setScreen(null);
-                ticket.getSeat().setTickets(null);
+//                ticket.getShowTime().setScreen(null);
+//                ticket.setBookingHistory(null);
+//                ticket.getSeat().setScreen(null);
+//                ticket.getSeat().setTickets(null);
             }
         }
         return bookingHistories;

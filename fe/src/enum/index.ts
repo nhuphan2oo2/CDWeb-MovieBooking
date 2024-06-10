@@ -13,3 +13,9 @@ export enum BookingStatus {
   success = 1,
   cancel = 2,
 }
+export enum ShowtimeStatus {
+  delete = 0,
+  active = 1,
+  cancel = 2,
+  screened = 3,
+}

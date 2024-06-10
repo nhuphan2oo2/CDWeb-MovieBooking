@@ -35,7 +35,7 @@ public class UserService {
                 ticket.setShowTime(null);
                 ticket.setBookingHistory(null);
                 ticket.getSeat().setTickets(null);
-                ticket.getSeat().setScreen(null);
+//                ticket.getSeat().setScreen(null);
             }
         }
     }

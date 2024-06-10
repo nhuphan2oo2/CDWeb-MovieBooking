@@ -41,10 +41,10 @@ const SeatSelectingPage = () => {
         .catch((error) => console.error(error));
     showTimeId &&
       seatApi
-        .getByScreenId(showTime?.screen?.id || -1)
+        .getSeatsByShowtimeId(Number.parseInt(showTimeId) || -1)
         .then((response) => setSeats(response.data))
         .catch((error) => console.error(error));
-  }, [movieId, showTime?.screen?.id, showTimeId]);
+  }, [movieId, showTimeId]);
 
   const toggleSeat = (seat: SeatType) => {
     if (
@@ -59,7 +59,10 @@ const SeatSelectingPage = () => {
     } else {
       seatApi.get(seat.id!).then((response) => {
         if (response.data.status === SeatStatus.booked)
+          // setSeats({...seats,})
           return alert(`Ghế ${seat.seatIndex} đã được đặt`);
+        // dispatch(remove(seat));
+        // seat.status = SeatStatus.booked;
       });
       dispatch(add(seat));
     }
@@ -88,7 +91,7 @@ const SeatSelectingPage = () => {
             }
           });
         });
-        return console.log(`Ghế ${bookedSeats.join(", ")} đã được đặt`);
+        return;
       } else if (response.status === 200) {
         // save this booking to local storage
         localStorage.setItem("movieId", JSON.stringify(movieId));

@@ -1,6 +1,5 @@
 package com.example.be.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,14 +20,8 @@ public class Seat {
     private int id;
     private String seatIndex;
     private int status;
-//    available = 1,
-//  selected = 2,
-//  booked = 0,
-//  unavailable = 3,
     @ManyToOne
-    @JoinColumn(name = "screen_id",
-            foreignKey = @ForeignKey(name = "fk_seats_screens"))
-    private Screen screen;
+    private ScreenShowTime screenShowTime;
     @OneToMany(mappedBy = "seat")
     private List<Ticket> tickets;
 }

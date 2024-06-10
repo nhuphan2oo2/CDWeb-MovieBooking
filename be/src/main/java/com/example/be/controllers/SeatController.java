@@ -18,31 +18,31 @@ public class SeatController {
 
 
     @GetMapping
-    public ResponseEntity<List<Seat>> getSeatsByScreenId(@RequestParam int screenId) {
-        return new ResponseEntity<>(seatService.getSeatsByScreenId(screenId), HttpStatus.OK);
+    public ResponseEntity<List<Seat>> getSeatsByShowtimeId(@RequestParam int showtimeId) {
+        return new ResponseEntity<>(seatService.getSeatsByShowtimeId(showtimeId), HttpStatus.OK);
     }
 
-    @GetMapping("/chooseSeat/{id}")
-    public ResponseEntity<List<Seat>> chooseSeat(@PathVariable int id) {
-        boolean checkSeat = seatService.checkSeatStatus(id, 1);
-        Seat seat = seatService.chooseSeat(id);
-        if (checkSeat) {
-            return new ResponseEntity<>(seatService.getSeatsByScreenId(seat.getScreen().getId()), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(seatService.getSeatsByScreenId(seat.getScreen().getId()), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/unChooseSeat/{id}")
-    public ResponseEntity<List<Seat>> unChooseSeat(@PathVariable int id) {
-        boolean checkSeat = seatService.checkSeatStatus(id, 2);
-        Seat seat = seatService.unChooseSeat(id);
-        if (checkSeat) {
-            return new ResponseEntity<>(seatService.getSeatsByScreenId(seat.getScreen().getId()), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(seatService.getSeatsByScreenId(seat.getScreen().getId()), HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @GetMapping("/chooseSeat/{id}")
+//    public ResponseEntity<List<Seat>> chooseSeat(@PathVariable int id) {
+//        boolean checkSeat = seatService.checkSeatStatus(id, 1);
+//        Seat seat = seatService.chooseSeat(id);
+//        if (checkSeat) {
+//            return new ResponseEntity<>(seatService.getSeatsByScreenId(seat.getScreen().getId()), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(seatService.getSeatsByScreenId(seat.getScreen().getId()), HttpStatus.BAD_REQUEST);
+//        }
+//    }
+//
+//    @GetMapping("/unChooseSeat/{id}")
+//    public ResponseEntity<List<Seat>> unChooseSeat(@PathVariable int id) {
+//        boolean checkSeat = seatService.checkSeatStatus(id, 2);
+//        Seat seat = seatService.unChooseSeat(id);
+//        if (checkSeat) {
+//            return new ResponseEntity<>(seatService.getSeatsByScreenId(seat.getScreen().getId()), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(seatService.getSeatsByScreenId(seat.getScreen().getId()), HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Seat> get(@PathVariable int id) {

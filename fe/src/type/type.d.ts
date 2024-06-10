@@ -66,9 +66,16 @@ export type ShowTimeType = {
   endTime?: string;
   price?: number;
   movie?: Movie;
+  screenShowTime?: screenShowTimeType;
+  createTime?: string;
+  status?: number;
+};
+export type screenShowTimeType = {
+  id?: number;
   screen?: ScreenType;
   status?: number;
 };
+
 export type ScreenType = {
   id?: number;
   capacity?: number;
@@ -89,4 +96,9 @@ export type TicketType = {
   bookingHistory?: BookingType;
   showTime?: ShowTimeType;
   status?: number;
+};
+export type SubjectType = {
+  field: string;
+  data: [];
+  width: number;
 };

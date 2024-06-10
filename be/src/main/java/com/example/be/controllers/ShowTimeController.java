@@ -34,6 +34,9 @@ public class ShowTimeController {
     public ResponseEntity<List<ShowTime>> getShowTimesByMovieId(@PathVariable int id) {
         return new ResponseEntity<>(showTimeService.getByMovieId(id), HttpStatus.OK);
     }
-
+    @GetMapping
+    public ResponseEntity<List<ShowTime>> getAll(){
+        return new ResponseEntity<>(showTimeService.getAll(), HttpStatus.OK);
+    }
 
 }

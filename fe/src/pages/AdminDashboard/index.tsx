@@ -23,10 +23,14 @@ const AdminDashboard = () => {
   const [tabActive, setTabActive] = useState(tabs[0]);
 
   useEffect(() => {
-    const u = getUserFromSession();
-    setUser(() => (u ? u : undefined));
-    u.role !== 1 && navigate("/");
-  }, [user]);
+    if (!user) {
+      setUser(() => getUserFromSession());
+    }
+    if (user?.role !== 1) {
+      toastContext.showToast("Bạn không có quyền truy cập vào trang này");
+      navigate("/");
+    }
+  }, []);
 
   const handleClickTab = (tab: string) => {
     setTabActive(tab);
@@ -36,12 +40,9 @@ const AdminDashboard = () => {
     navigate("/account");
   };
 
-  if (user?.role !== 1) {
-    toastContext.showToast("Bạn không có quyền truy cập vào trang này");
-    return;
-  }
-
-  return (
+  return user ? (
+    <div>Loading...</div>
+  ) : (
     <div className="flex w-full">
       <div className="flex flex-col items-center w-1/6 h-screen gap-4 shadow-lg">
         <div className="flex flex-col w-full text-base text-center uppercase">

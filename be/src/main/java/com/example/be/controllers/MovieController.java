@@ -35,7 +35,6 @@ public class MovieController {
     }
     @GetMapping("/search")
     public List<Movie> searchProducts(@RequestParam("query") String query) {
-        System.out.println(query);
         return movieService.searchProducts(query);
 //        return null;
     }
