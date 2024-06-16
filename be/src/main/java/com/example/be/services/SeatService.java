@@ -1,8 +1,10 @@
 package com.example.be.services;
 
 import com.example.be.models.Seat;
+import com.example.be.models.ShowTime;
 import com.example.be.models.Ticket;
 import com.example.be.repositories.SeatRepository;
+import com.example.be.repositories.ShowTimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +14,14 @@ import java.util.List;
 public class SeatService {
     @Autowired
     private SeatRepository seatRepository;
+    @Autowired private ShowTimeRepository showTimeRepository;
 
-    public List<Seat> getSeatsByScreenId(int screenId) {
-        return clearListSeat(seatRepository.findByScreenId(screenId));
+    public List<Seat> getSeatsByScreenShowtimeId(int id) {
+        return clearListSeat(seatRepository.findByScreenShowTimeId(id));
+    }
+    public List<Seat> getSeatsByShowtimeId(int id){
+        ShowTime showTime = showTimeRepository.findById(id);
+        return getSeatsByScreenShowtimeId(showTime.getScreenShowTime().getId());
     }
 
     public boolean checkSeatStatus(int id, int status) {
@@ -49,7 +56,9 @@ public class SeatService {
 
     private Seat clearSeat(Seat seat) {
         seat.setTickets(null);
-        seat.setScreen(null);
+        seat.getScreenShowTime().setSeats(null);
+        seat.getScreenShowTime().setScreen(null);
+//        seat.setScreen(null);
         return seat;
     }
 

@@ -38,4 +38,12 @@ public class MovieService {
         return movies;
     }
 
+    public List<Movie> searchProducts(String nameVn) {
+        List<Movie> result = movieRepository.findByNameVnContainingIgnoreCase(nameVn);
+        for(Movie movie: result){
+            movie.setShowTimes(null);
+        }
+        return result;
+//        return null;
+    }
 }

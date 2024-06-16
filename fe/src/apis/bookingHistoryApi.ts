@@ -6,17 +6,17 @@ const bookingHistoryApi = {
   //     const url = "/movies";
   //     return AxiosClient.get(url, { params });
   //   },
-  //   get(id: string) {
-  //     const url = `/movies/${id}`;
-  //     return AxiosClient.get(url);
-  //   },
-
+  getByUserId(userId: number) {
+    const url = `/bookingHistories?userId=${userId}`;
+    return AxiosClient.get(url);
+  },
   add(
     userId: number,
     showTimeId: number,
     seats: SeatType[],
     discount: number,
-    total: number
+    total: number,
+    status: number
   ) {
     const url = `/bookingHistories`;
     const body = {
@@ -34,13 +34,11 @@ const bookingHistoryApi = {
           },
         };
       }),
-
       discount: discount,
       total: total,
+      status: status,
     };
     localStorage.setItem("body", JSON.stringify(body));
-    console.log("thong tin dat >>>>", body);
-
     return AxiosClient.post(url, body);
   },
   pay(amount: number) {

@@ -1,7 +1,5 @@
 package com.example.be.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,12 +15,13 @@ import java.util.List;
 @ToString
 @Table(name = "booking_histories")
 public class BookingHistory {
+    public static final int PENDING = 0;
+    public static final int SUCCESS = 1;
+    public static final int FAILED = 2;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
-    @JoinColumn(name = "user_id",
-            foreignKey = @ForeignKey(name = "fk_booking_histories_users"))
     private User user;
     @OneToMany(mappedBy = "bookingHistory")
     private List<Ticket> tickets;

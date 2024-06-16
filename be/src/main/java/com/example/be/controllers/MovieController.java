@@ -33,5 +33,9 @@ public class MovieController {
     public ResponseEntity<List<Movie>> getMoviesByType(@RequestParam String type) {
         return new ResponseEntity<>(movieService.getMoviesByType(type), HttpStatus.OK);
     }
-
+    @GetMapping("/search")
+    public List<Movie> searchProducts(@RequestParam("query") String query) {
+        return movieService.searchProducts(query);
+//        return null;
+    }
 }

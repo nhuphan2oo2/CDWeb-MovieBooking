@@ -10,8 +10,8 @@ const seatApi = {
   //     const url = `/movies/${id}`;
   //     return axiosClient.get(url);
   //   },
-  getByScreenId(screenId: number) {
-    const url = `/seats?screenId=${screenId}`;
+  getSeatsByShowtimeId(showtimeId: number) {
+    const url = `/seats?showtimeId=${showtimeId}`;
     return AxiosClient.get(url);
   },
   get(id: number) {

@@ -1,17 +1,33 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import clsx from "clsx";
 import { UserType } from "../../../type/type";
 import { save_change, initUser, userReducer } from "../store";
+import userApi from "../../../apis/userApi";
+import { getUserFromSession, setUserToSession } from "../../../utils/User";
 
 const UserInfo = () => {
   const [user, dispatch] = useReducer(userReducer, initUser);
   const [tempUser, setTempUser] = useState<UserType>(user);
   const [visibleForm, setVisibleForm] = useState(false);
+
+  useEffect(() => {
+    dispatch(save_change(getUserFromSession() as UserType));
+    setTempUser(() => user);
+  }, [user.id]);
+
   const handleClickCancel = () => {
     setTempUser(user);
   };
-  const handleClickSave = () => {
+  const handleClickSave = (
+    name: string,
+    birth: string,
+    email: string,
+    phone: string
+  ) => {
+    birth = new Date(birth).toISOString();
     dispatch(save_change(tempUser));
+    userApi.update(user.id!, name, birth, email, phone);
+    setUserToSession(tempUser);
   };
 
   const handleCloseForm = () => {
@@ -28,7 +44,7 @@ const UserInfo = () => {
   };
 
   const modalClass = clsx(
-    "bg-quaternary w-[550px] h-fit p-5 rounded flex-col gap-3 text-primary",
+    "bg-tertiary w-[550px] h-fit p-5 rounded flex-col gap-3 text-gray-800",
     visibleForm ? "animate-update-form-open flex" : "hidden "
   );
   return (
@@ -38,10 +54,10 @@ const UserInfo = () => {
         <div className=" bg-primary h-[2px] rounded-md"></div>
       </div>
       <div className="flex flex-col gap-1 ">
-        <div>{user.name}</div>
-        <div>{user.birth}</div>
-        <div>{user.email}</div>
-        <div>{user.phone}</div>
+        <div>Họ tên: {user?.name}</div>
+        <div>Sinh nhật: {user?.birth?.slice(0, 10)}</div>
+        <div>Email: {user?.email}</div>
+        <div>Số điện thoại: {user?.phone}</div>
       </div>
       <div>
         <label
@@ -54,7 +70,7 @@ const UserInfo = () => {
         {visibleForm && (
           <div
             id="update-form"
-            className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-screen overflow-hidden bg-opacity-50 bg-primary"
+            className="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-screen overflow-hidden bg-opacity-30 bg-tertiary"
           >
             <div id="form-user-info" className={modalClass}>
               <div className="mb-2 text-2xl text-center uppercase">
@@ -64,7 +80,7 @@ const UserInfo = () => {
                 <div className="w-1/4 ">Họ tên</div>
                 <input
                   type="text"
-                  value={tempUser.name}
+                  value={tempUser?.name}
                   onChange={(e) =>
                     setTempUser((prev) => ({ ...prev, name: e.target.value }))
                   }
@@ -75,7 +91,7 @@ const UserInfo = () => {
                 <div className="w-1/4 ">Ngày sinh</div>
                 <input
                   type="date"
-                  value={tempUser.birth}
+                  value={tempUser?.birth}
                   onChange={(e) =>
                     setTempUser((prev) => ({ ...prev, birth: e.target.value }))
                   }
@@ -86,7 +102,7 @@ const UserInfo = () => {
                 <div className="w-1/4 ">Email</div>
                 <input
                   type="text"
-                  value={tempUser.email}
+                  value={tempUser?.email}
                   onChange={(e) =>
                     setTempUser((prev) => ({ ...prev, email: e.target.value }))
                   }
@@ -97,7 +113,7 @@ const UserInfo = () => {
                 <div className="w-1/4 ">Số điện thoại</div>
                 <input
                   type="text"
-                  value={tempUser.phone}
+                  value={tempUser?.phone}
                   onChange={(e) =>
                     setTempUser((prev) => ({ ...prev, phone: e.target.value }))
                   }
@@ -116,7 +132,12 @@ const UserInfo = () => {
                 </div>
                 <div
                   onClick={() => {
-                    handleClickSave();
+                    handleClickSave(
+                      tempUser.name!,
+                      tempUser.birth!,
+                      tempUser.email!,
+                      tempUser.phone!
+                    );
                     handleCloseForm();
                   }}
                   className="px-5 py-2 text-white rounded cursor-pointer bg-primary hover:bg-secondary"

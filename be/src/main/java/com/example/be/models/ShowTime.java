@@ -1,7 +1,5 @@
 package com.example.be.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,10 +22,8 @@ public class ShowTime {
     @JoinColumn(name = "movie_id",
             foreignKey = @ForeignKey(name = "fk_show_times_movies"))
     private Movie movie;
-    @ManyToOne
-    @JoinColumn(name = "screen_id",
-            foreignKey = @ForeignKey(name = "fk_show_times_screens"))
-    private Screen screen;
+    @OneToOne
+    private ScreenShowTime screenShowTime;
     @OneToMany(mappedBy = "showTime")
     private List<Ticket> tickets;
     private LocalDateTime startTime;

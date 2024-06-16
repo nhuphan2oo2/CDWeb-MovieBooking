@@ -10,5 +10,5 @@ public interface SeatRepository extends JpaRepository<Seat, Integer> {
 
     Seat findById(int id);
 
-    List<Seat> findByScreenId(int id);
+    List<Seat> findByScreenShowTimeId(int id);
 }

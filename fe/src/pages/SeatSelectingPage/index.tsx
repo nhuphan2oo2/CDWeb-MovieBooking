@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { Movie, SeatType, ShowTimeType } from "../../type/type";
 import screen from "./assets/screen.png";
 import { useLocation } from "react-router-dom";
@@ -10,6 +10,7 @@ import showTimeApi from "../../apis/showTimeApi";
 import seatApi from "../../apis/seatApi";
 import { SeatStatus } from "../../enum";
 import bookingHistoryApi from "../../apis/bookingHistoryApi";
+import { ToastContext } from "../../hooks/ToastMessage/ToastContext";
 
 const SeatSelectingPage = () => {
   const [state, dispatch] = useReducer(reducer, initState);
@@ -21,6 +22,7 @@ const SeatSelectingPage = () => {
 
   const [movie, setMovie] = useState<Movie>();
   const [showTime, setShowTime] = useState<ShowTimeType>();
+  const toast = useContext(ToastContext);
 
   useEffect(() => {
     movieId &&
@@ -39,10 +41,10 @@ const SeatSelectingPage = () => {
         .catch((error) => console.error(error));
     showTimeId &&
       seatApi
-        .getByScreenId(showTime?.screen?.id || -1)
+        .getSeatsByShowtimeId(Number.parseInt(showTimeId) || -1)
         .then((response) => setSeats(response.data))
         .catch((error) => console.error(error));
-  }, [movieId, showTime?.screen?.id, showTimeId]);
+  }, [movieId, showTimeId]);
 
   const toggleSeat = (seat: SeatType) => {
     if (
@@ -57,7 +59,10 @@ const SeatSelectingPage = () => {
     } else {
       seatApi.get(seat.id!).then((response) => {
         if (response.data.status === SeatStatus.booked)
+          // setSeats({...seats,})
           return alert(`Ghế ${seat.seatIndex} đã được đặt`);
+        // dispatch(remove(seat));
+        // seat.status = SeatStatus.booked;
       });
       dispatch(add(seat));
     }
@@ -68,8 +73,8 @@ const SeatSelectingPage = () => {
     discount: number,
     total: number
   ) => {
-    if (!userId) return alert("Vui lòng đăng nhập để đặt vé");
-    if (seats.length === 0) return alert("Vui lòng chọn ghế");
+    if (!userId) return toast.showToast("Vui lòng đăng nhập để đặt vé");
+    if (seats.length === 0) return toast.showToast("Vui lòng chọn ghế");
     seatApi.isBookingList(state.selectedSeats).then((response) => {
       if (response.status === 226) {
         const bookedSeats: SeatType[] = response.data;
@@ -86,16 +91,8 @@ const SeatSelectingPage = () => {
             }
           });
         });
-        return console.log(`Ghế ${bookedSeats.join(", ")} đã được đặt`);
+        return;
       } else if (response.status === 200) {
-        // bookingHistoryApi
-        //   .add(userId, showTimeId, seats, discount, total)
-        //   .then((response) => {
-        //     response.status === 200
-        //       ? navigate("/success-booking")
-        //       : alert("Lỗi trong quá trình đặt vé");
-        //   });
-
         // save this booking to local storage
         localStorage.setItem("movieId", JSON.stringify(movieId));
         localStorage.setItem("showTimeId", JSON.stringify(showTimeId));
@@ -163,7 +160,7 @@ const SeatSelectingPage = () => {
             </span>
           </div>
           <div className="flex flex-col px-5 py-3 border-b border-primary">
-            <div className="text-[20px] font-bold">{movie?.name_vn}</div>
+            <div className="text-[20px] font-bold">{movie?.nameVn}</div>
             <div>{state.selectedSeats.length} vé</div>
             <div className="flex items-center justify-between">
               <div className="w-1/2">
@@ -181,13 +178,13 @@ const SeatSelectingPage = () => {
           <button
             onClick={() =>
               handlePayment(
-                1,
+                JSON.parse(sessionStorage.getItem("user") || "{}").id || 0,
                 state.selectedSeats,
                 0,
                 50000 * state.selectedSeats.length
               )
             }
-            className="py-3 text-[18px] uppercase mx-5 text-white rounded bg-primary"
+            className="py-3 text-[18px] uppercase mx-5 text-white rounded bg-primary active:scale-[0.95] hover:brightness-110 transition-all "
           >
             Thanh toán
           </button>

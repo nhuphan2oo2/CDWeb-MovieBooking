@@ -1,10 +1,10 @@
 import AxiosClient from "./AxiosClient";
 
 const showTimeApi = {
-  //   getAll: (params?: string) => {
-  //     const url = "/movies";
-  //     return AxiosClient.get(url, { params });
-  //   },
+  getAll: () => {
+    const url = "/showtimes";
+    return AxiosClient.get(url);
+  },
   get(id: string) {
     const url = `/showtimes/${id}`;
     return AxiosClient.get(url);

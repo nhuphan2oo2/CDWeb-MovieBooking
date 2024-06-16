@@ -41,7 +41,7 @@ const FilmsPage = () => {
           <div className="grid w-full grid-cols-3 gap-8">
             {movies.map((movie) => {
               return (
-                <Link to={`/movie/${movie.id}`}>
+                <Link key={movie.id} to={`/movie/${movie.id}`}>
                   <FilmCard key={movie.id} movie={movie} type={type} />
                 </Link>
               );

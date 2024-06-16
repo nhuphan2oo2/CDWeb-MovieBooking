@@ -52,7 +52,7 @@ const FilmCard: React.FC<FilmCardProps> = (props) => {
       <div className="flex items-center  px-2 h-20 text-[14px]">
         <div className="flex flex-col gap-2">
           <div className="text-[18px] leading-5  cursor-pointer hover:text-black w-full ">
-            {movie.name_vn}
+            {movie.nameVn}
           </div>
           <div className="flex flex-row gap-1 leading-3">
             <div className="">Thời lượng:</div>

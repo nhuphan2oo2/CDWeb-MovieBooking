@@ -1,6 +1,6 @@
 export type Movie = {
   id: number;
-  name_vn?: string;
+  nameVn?: string;
   name_en?: string;
   director?: string;
   actor?: string;
@@ -51,11 +51,14 @@ export type SeatType = {
 };
 
 export type UserType = {
-  name?: string;
-  birth?: string;
+  id?: number;
   email?: string;
-  phone?: string;
+  name?: string;
   password?: string;
+  phone?: string;
+  birth?: string;
+  role?: number;
+  status?: number;
 };
 export type ShowTimeType = {
   id?: number;
@@ -63,11 +66,39 @@ export type ShowTimeType = {
   endTime?: string;
   price?: number;
   movie?: Movie;
+  screenShowTime?: screenShowTimeType;
+  createTime?: string;
+  status?: number;
+};
+export type screenShowTimeType = {
+  id?: number;
   screen?: ScreenType;
   status?: number;
 };
+
 export type ScreenType = {
   id?: number;
   capacity?: number;
   status?: number;
+};
+export type BookingType = {
+  id?: number;
+  user: UserType;
+  tickets: TicketType[];
+  discount: number;
+  total: number;
+  time: string;
+  status: number;
+};
+export type TicketType = {
+  id?: number;
+  seat?: SeatType;
+  bookingHistory?: BookingType;
+  showTime?: ShowTimeType;
+  status?: number;
+};
+export type SubjectType = {
+  field: string;
+  data: [];
+  width: number;
 };

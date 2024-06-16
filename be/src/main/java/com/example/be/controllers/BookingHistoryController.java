@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,5 +25,9 @@ public class BookingHistoryController {
         return new ResponseEntity<>(bookingHistoryService.add(bookingHistory), HttpStatus.OK);
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<BookingHistory>> getByUserId(@RequestParam  int userId){
+        return new ResponseEntity<>(bookingHistoryService.getBookingHistoriesByUserId(userId), HttpStatus.OK);
+    }
 
 }
