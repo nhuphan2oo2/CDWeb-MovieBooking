@@ -23,8 +23,11 @@ const pathName = {
   paymentPage: "/redirect-payment",
   adminDashboard: "/admin",
 };
-
-const routes = [
+type RouteType = {
+  path: string;
+  element: () => JSX.Element;
+};
+const routes: RouteType[] = [
   { path: pathName.homepage, element: Homepage },
   { path: pathName.userPage, element: UserPage },
   { path: pathName.searchPage, element: SearchPage },

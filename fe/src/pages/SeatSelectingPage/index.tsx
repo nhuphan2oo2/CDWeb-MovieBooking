@@ -152,7 +152,7 @@ const SeatSelectingPage = () => {
         <div className="flex flex-col w-1/3 border rounded text-primary border-primary">
           <div className="py-3 px-5 border-b border-primary text-[18px] flex flex-col">
             <p>
-              Screen {showTime?.screen?.id} -
+              Screen {showTime?.screenShowTime?.id} -
               <strong> {showTime?.startTime?.slice(0, 10)}</strong>
             </p>
             <span>

@@ -73,7 +73,7 @@ const SuccessBookingPage = () => {
                   .join(", ")}
               </div>
               <div>
-                {(50000 * bookingHistory?.tickets.length).toLocaleString(
+                {(50000 * (bookingHistory?.tickets.length || 0)).toLocaleString(
                   "vi-VN"
                 )}{" "}
                 VND
@@ -104,7 +104,7 @@ const SuccessBookingPage = () => {
               alt=""
             />
             <div className="w-80">
-              {bookingHistory?.tickets[0].showTime.movie.nameVn}
+              {bookingHistory?.tickets[0].showTime?.movie?.nameVn}
             </div>
           </div>
 
@@ -116,7 +116,7 @@ const SuccessBookingPage = () => {
           </div>
           <div>
             {" "}
-            {(50000 * bookingHistory?.tickets.length).toLocaleString(
+            {(50000 * (bookingHistory?.tickets.length || 0)).toLocaleString(
               "vi-VN"
             )}{" "}
             VND
