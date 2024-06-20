@@ -3,11 +3,13 @@ import "./App.css";
 import routes from "./routes/routes";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import CategoryBar from "./components/CategoryBar";
 
 function App() {
   return (
     <Router>
       <Header />
+      {location.pathname !== "/admin" && <CategoryBar />}
       <Routes>
         {routes.map((route, index) => {
           return (
@@ -15,7 +17,7 @@ function App() {
           );
         })}
       </Routes>
-      <Footer />
+      {location.pathname !== "/admin" && <Footer />}
     </Router>
   );
 }
