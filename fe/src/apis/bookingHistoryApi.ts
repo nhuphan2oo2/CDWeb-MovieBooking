@@ -45,5 +45,13 @@ const bookingHistoryApi = {
     const url = `/payment/create_payment?amount=${amount}`;
     return AxiosClient.get(url);
   },
+  getAllYears() {
+    const url = `/bookingHistories/allYears`;
+    return AxiosClient.get(url);
+  },
+  revenueMonthly(year: number) {
+    const url = `/bookingHistories/revenueMonthly/${year}`;
+    return AxiosClient.get(url);
+  },
 };
 export default bookingHistoryApi;

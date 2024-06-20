@@ -63,7 +63,6 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <CategoryBar />
     </div>
   );
 };
