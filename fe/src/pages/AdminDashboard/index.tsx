@@ -8,7 +8,6 @@ import ScreensManagePage from "./ScreensManagePage";
 import { UserType } from "../../type/type";
 import { getUserFromSession } from "../../utils/User";
 import { ToastContext } from "../../hooks/ToastMessage/ToastContext";
-import Homepage from "../Homepage";
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<UserType>();
