@@ -17,7 +17,7 @@ const Statistics: React.FC<StatisticsProps> = (props) => {
     <div className="flex gap-8">
       {statistics.map((statistic, index) => {
         return (
-          <div className="flex justify-center gap-3  opacity-80">
+          <div key={index} className="flex justify-center gap-3 opacity-80">
             <div className="my-auto text-[30px]"> {statistic.icon}</div>
             <div className="flex flex-col">
               <div>{statistic.data + statistic.unit}</div>

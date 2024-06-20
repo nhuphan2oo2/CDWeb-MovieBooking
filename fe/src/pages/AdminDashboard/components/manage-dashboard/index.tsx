@@ -55,9 +55,6 @@ const ManageDashboard: React.FC<ManageDashboardProps> = (props) => {
           <div className="col-span-1 "></div>
         </div>
         <div className="grid items-center justify-center w-full grid-cols-12 pb-2 text-center border-b border-black opacity-80">
-          {subjects.map((subject, index) => {
-            subject.data.map((data) => {});
-          })}
           <div className="flex justify-center col-span-1 gap-2 text-xl">
             <FaPen className="cursor-pointer hover:text-primary" />
             <RiDeleteBin5Line className="cursor-pointer hover:text-primary" />
