@@ -13,7 +13,7 @@ export const userReducer = (state: UserType, action: ActionType) => {
     case SAVE_CHANGE:
       return action.payload;
     default:
-      throw new Error();
+      throw state;
   }
 };
 

@@ -1,16 +1,9 @@
 import EarningReportCard from "./EarningReportCard";
-import { TbChartBar } from "react-icons/tb";
-import Statistics from "./Statistics";
-import { CiClock2 } from "react-icons/ci";
 import ReactApexChart from "react-apexcharts";
 const ReportPage = () => {
   const state = {
     series: [44, 55, 13, 43, 22],
     options: {
-      chart: {
-        width: 380,
-        type: "pie",
-      },
       labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
       responsive: [
         {
@@ -25,6 +18,7 @@ const ReportPage = () => {
           },
         },
       ],
+      stacked: true,
     },
   };
 
