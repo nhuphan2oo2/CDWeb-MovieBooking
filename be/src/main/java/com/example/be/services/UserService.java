@@ -29,9 +29,9 @@ public class UserService {
     }
 
     private void clear(User user) {
-        for(BookingHistory bookingHistory: user.getBookingHistories()){
+        for (BookingHistory bookingHistory : user.getBookingHistories()) {
             bookingHistory.setUser(null);
-            for(Ticket ticket: bookingHistory.getTickets()){
+            for (Ticket ticket : bookingHistory.getTickets()) {
                 ticket.setShowTime(null);
                 ticket.setBookingHistory(null);
                 ticket.getSeat().setTickets(null);
@@ -42,11 +42,12 @@ public class UserService {
 
     public User login(String email, String password) {
         User user = userRepository.findByEmailAndPassword(email, password);
-        clear(user);
+        if (user != null) clear(user);
         return userRepository.findByEmailAndPassword(email, password);
     }
-    public User update(User user){
-        return  userRepository.save(user);
+
+    public User update(User user) {
+        return userRepository.save(user);
     }
 
 }

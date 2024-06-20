@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,5 +99,32 @@ public class BookingHistoryService {
             }
         }
         return bookingHistories;
+    }
+
+    public int getRevenueInYear(int year) {
+        return bookingHistoryRepository.findTotalByYearAndStatus(year, BookingHistory.SUCCESS);
+    }
+
+    //    monthly revenue in year
+    public int[] getMonthlyRevenueInYear(int year) {
+        List<Object[]> results = bookingHistoryRepository.findMonthlyTotalByYearAndStatus(year, BookingHistory.SUCCESS);
+        int[] monthlyTotals = new int[12];
+        Arrays.fill(monthlyTotals, 0);
+        for (Object[] result : results) {
+            if (result.length == 2) {
+                Integer month = (Integer) result[0];
+                System.out.println(month);
+                Long total = (Long) result[1];
+                System.out.println(total);
+                if (month != null && total != null) {
+                    monthlyTotals[month - 1] = total.intValue();
+                }
+            }
+        }
+
+        return monthlyTotals;
+    }
+    public List<Integer> getAllYearOfBookingHistories(){
+        return bookingHistoryRepository.findAllYears(BookingHistory.SUCCESS);
     }
 }
