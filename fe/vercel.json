@@ -6,12 +6,6 @@
     }
   ],
 
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
   "builds": [
     {
       "src": "src/main.tsx",
