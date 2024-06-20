@@ -17,7 +17,7 @@
       "src": "src/main.tsx",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "build"
+        "distDir": "dist"
       }
     }
   ]
