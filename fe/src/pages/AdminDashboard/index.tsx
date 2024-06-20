@@ -31,7 +31,7 @@ const AdminDashboard = () => {
   if (user?.role !== 1) {
     user && toastContext.showToast("Bạn không có quyền truy cập vào trang này");
     navigate("/");
-    return null;
+    return <></>;
   }
 
   const handleClickTab = (tab: string) => {
@@ -43,45 +43,43 @@ const AdminDashboard = () => {
   };
 
   return (
-    user && (
-      <div className="flex w-full">
-        <div className="flex flex-col items-center w-[12%] h-screen gap-4 shadow-lg">
-          <div className="flex flex-col w-full text-base text-center uppercase">
-            {tabs.map((tab) => {
-              if (tab === "Đăng xuất") {
-                return (
-                  <div
-                    onClick={() => handleLogout()}
-                    className={`py-2 m-1 rounded cursor-pointer border-b-gray-300 duration-100 hover:bg-primary hover:bg-opacity-70`}
-                  >
-                    {tab}
-                  </div>
-                );
-              }
+    <div className="flex w-full">
+      <div className="flex flex-col items-center w-[12%] h-screen gap-4 shadow-lg">
+        <div className="flex flex-col w-full text-base text-center uppercase">
+          {tabs.map((tab) => {
+            if (tab === "Đăng xuất") {
               return (
                 <div
-                  onClick={() => handleClickTab(tab)}
-                  className={`py-2 m-1 rounded cursor-pointer border-b-gray-300 duration-100 hover:bg-primary hover:bg-opacity-70
-                    ${tab === tabActive ? "bg-primary " : ""}
-                    `}
+                  onClick={() => handleLogout()}
+                  className={`py-2 m-1 rounded cursor-pointer border-b-gray-300 duration-100 hover:bg-primary hover:bg-opacity-70`}
                 >
                   {tab}
                 </div>
               );
-            })}
-          </div>
-        </div>
-        <div className="flex flex-col items-center w-[88%] gap-2 m-2">
-          <div className="w-full h-10 rounded">
-            {tabActive === tabs[0] && <ReportPage />}
-            {tabActive === tabs[1] && <ShowtimesManagePage />}
-            {tabActive === tabs[2] && <MoviesManagePage />}
-            {tabActive === tabs[4] && <ScreensManagePage />}
-            {tabActive === tabs[4] && <AccountsManagePage />}
-          </div>
+            }
+            return (
+              <div
+                onClick={() => handleClickTab(tab)}
+                className={`py-2 m-1 rounded cursor-pointer border-b-gray-300 duration-100 hover:bg-primary hover:bg-opacity-70
+                    ${tab === tabActive ? "bg-primary " : ""}
+                    `}
+              >
+                {tab}
+              </div>
+            );
+          })}
         </div>
       </div>
-    )
+      <div className="flex flex-col items-center w-[88%] gap-2 m-2">
+        <div className="w-full h-10 rounded">
+          {tabActive === tabs[0] && <ReportPage />}
+          {tabActive === tabs[1] && <ShowtimesManagePage />}
+          {tabActive === tabs[2] && <MoviesManagePage />}
+          {tabActive === tabs[4] && <ScreensManagePage />}
+          {tabActive === tabs[4] && <AccountsManagePage />}
+        </div>
+      </div>
+    </div>
   );
 };
 export default AdminDashboard;

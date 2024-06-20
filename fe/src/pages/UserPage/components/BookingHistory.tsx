@@ -12,7 +12,7 @@ const BookingHistory = () => {
   const [user, setUser] = useState<UserType>();
 
   useEffect(() => {
-    setUser(getUserFromSession());
+    setUser(getUserFromSession() || {});
   }, []);
 
   useEffect(() => {

@@ -30,7 +30,7 @@ const PaymentPage = () => {
     localStorage.removeItem("showTimeId");
     localStorage.removeItem("total");
     localStorage.removeItem("discount");
-    return;
+    return <></>;
   }
 
   window.location.href =
@@ -52,6 +52,6 @@ const PaymentPage = () => {
     localStorage.removeItem("discount");
   }, 1000);
 
-  return;
+  return <></>;
 };
 export default PaymentPage;
