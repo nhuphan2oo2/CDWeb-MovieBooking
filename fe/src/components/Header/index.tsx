@@ -1,5 +1,4 @@
 import logo from "../../assets/images/logo.png";
-import CategoryBar from "../CategoryBar";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchBar from "../Search";
 import { useEffect, useState } from "react";

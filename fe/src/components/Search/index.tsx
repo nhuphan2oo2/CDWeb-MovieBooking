@@ -1,5 +1,5 @@
 // src/components/SearchBar.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { Movie } from "../../type/type";
 import movieApi from "../../apis/movieApi";
@@ -11,7 +11,7 @@ const SearchBar = () => {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setQuery(query);
     if (query.length > 1) {
@@ -32,7 +32,7 @@ const SearchBar = () => {
           id="search"
           type="text"
           value={query}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e)}
           placeholder="Tìm kiếm phim..."
           className="w-full px-3 py-1 text-lg leading-4 text-black outline-none bg-tertiary placeholder:text-black placeholder:text-opacity-50"
         />
