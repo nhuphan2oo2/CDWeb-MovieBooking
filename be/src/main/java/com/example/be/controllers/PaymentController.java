@@ -1,24 +1,43 @@
 package com.example.be.controllers;
 
+import com.example.be.dto.PaymentReqDTO;
 import com.example.be.dto.PaymentResDTO;
+import com.example.be.models.*;
+import com.example.be.services.*;
 import com.example.be.utils.PaymentConfig;
+import jakarta.mail.MessagingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/payment")
 public class PaymentController {
+    @Autowired
+    private TicketService ticketService;
+    @Autowired
+    private SeatService seatService;
+
+    @Autowired
+    private BookingHistoryService bookingHistoryService;
+    @Autowired
+    private ShowTimeService showTimeService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping("/create_payment")
     public ResponseEntity<?> createPayment(@RequestParam long amount) throws UnsupportedEncodingException {
         String vnp_TxnRef = PaymentConfig.getRandomNumber(8);
@@ -84,6 +103,51 @@ public class PaymentController {
         return new ResponseEntity<>(paymentUrl, HttpStatus.OK);
     }
 
+    @PostMapping("/payment_success")
+    public ResponseEntity<ResponseObject> paymentSuccess(@RequestBody PaymentReqDTO paymentReqDTO) throws MessagingException {
+        User user = userService.get(paymentReqDTO.getUserId());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("failed", "User not found", ""));
+        }
 
+        List<Seat> seats = seatService.getListSeats(paymentReqDTO.getSeatIds());
+        for (Seat seat : seats) {
+            seat.setStatus(Seat.BOOKED);
+        }
+        seatService.updateList(seats);
+
+        ShowTime showTime = showTimeService.getById(paymentReqDTO.getShowTimeId());
+
+        BookingHistory bookingHistory = new BookingHistory();
+        bookingHistory.setTime(LocalDateTime.now());
+        bookingHistory.setDiscount(paymentReqDTO.getDiscount());
+        bookingHistory.setTotal(seats.size() * showTime.getPrice());
+        bookingHistory.setStatus(BookingHistory.SUCCESS);
+        bookingHistory.setUser(user);
+
+        bookingHistoryService.add(bookingHistory);
+        List<Ticket> tickets = ticketService.addListTickets(seats, showTime, bookingHistory);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("name", user.getName());
+        templateModel.put("email", user.getEmail());
+        templateModel.put("phone", user.getPhone());
+        templateModel.put("imageMovie", showTime.getMovie().getImage());
+        templateModel.put("movieName", showTime.getMovie().getNameVn());
+        templateModel.put("screenName", showTime.getScreenShowTime().getScreen().getName());
+        templateModel.put("price", showTime.getPrice());
+        templateModel.put("amountTicket", tickets.size());
+        templateModel.put("idBooking", bookingHistory.getId());
+        templateModel.put("startTime", showTime.getStartTime().format(formatter));
+        templateModel.put("endTime", showTime.getEndTime().format(formatter));
+        templateModel.put("subtotal", bookingHistory.getTotal());
+        templateModel.put("discount", bookingHistory.getDiscount());
+        templateModel.put("total", bookingHistory.getTotal() - bookingHistory.getDiscount());
+
+        emailService.sendHtmlEmailPaymentSuccess(user.getEmail(), "Booking Success", templateModel);
+        return ResponseEntity.ok(new ResponseObject("ok", "Success", tickets));
+    }
 
 }

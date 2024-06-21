@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bookingHistories")
@@ -32,6 +31,10 @@ public class BookingHistoryController {
         return new ResponseEntity<>(bookingHistoryService.getBookingHistoriesByUserId(userId), HttpStatus.OK);
     }
 
+    @GetMapping("/getLastBooking")
+    public ResponseEntity<BookingHistory> getLastBooking(@RequestParam int userId) {
+        return new ResponseEntity<>(bookingHistoryService.getLastBookingByUserId(userId), HttpStatus.OK);
+    }
     @GetMapping("/revenue/{year}")
     public ResponseEntity<ResponseObject> getRevenueInYear(@PathVariable int year) {
         return new ResponseEntity<>(new ResponseObject("ok", "success", bookingHistoryService.getRevenueInYear(year)), HttpStatus.OK);

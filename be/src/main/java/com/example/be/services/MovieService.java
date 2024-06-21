@@ -1,7 +1,6 @@
 package com.example.be.services;
 
 import com.example.be.models.Movie;
-
 import com.example.be.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

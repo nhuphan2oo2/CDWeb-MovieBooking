@@ -1,8 +1,8 @@
 import { useLocation } from "react-router-dom";
-import bookingHistoryApi from "../../apis/bookingHistoryApi";
-import { useContext } from "react";
+import { add } from "../../apis/bookingHistoryApi";
+import { useContext, useEffect } from "react";
 import { ToastContext } from "../../hooks/ToastMessage/ToastContext";
-import { BookingStatus } from "../../enum";
+import { SeatType } from "../../type/type";
 
 const PaymentPage = () => {
   const pathname = useLocation().search;
@@ -12,45 +12,43 @@ const PaymentPage = () => {
   const movieId = JSON.parse(localStorage.getItem("movieId") || "{}");
   const showTimeId = JSON.parse(localStorage.getItem("showTimeId") || "{}");
   const seats = JSON.parse(localStorage.getItem("seats") || "{}");
-  const total = JSON.parse(localStorage.getItem("total") || "{}");
   const discount = JSON.parse(localStorage.getItem("discount") || "{}");
   const toast = useContext(ToastContext);
-  if (code === "00") {
-    window.location.href = "/success-booking";
-    toast.showToast("Đặt vé thành công");
-    bookingHistoryApi.add(
-      user.id,
-      showTimeId,
-      seats,
-      discount,
-      total,
-      BookingStatus.success
-    );
-    localStorage.removeItem("movieId");
-    localStorage.removeItem("showTimeId");
-    localStorage.removeItem("total");
-    localStorage.removeItem("discount");
-    return <></>;
-  }
+  const seatsId = seats.map((seat: SeatType) => seat.id);
 
-  window.location.href =
-    "/seat-selecting?movieId=" + movieId + "&showTimeId=" + showTimeId;
-  toast.showToast("Đặt vé thất bại, vui lòng thử lại!");
+  const addBooking = async () => {
+    if (code === "00") {
+      await add(user.id, showTimeId, seatsId, discount);
+      toast.showToast("Đặt vé thành công");
+      window.location.href = "/success-booking";
+      localStorage.removeItem("movieId");
+      localStorage.removeItem("showTimeId");
+      localStorage.removeItem("total");
+      localStorage.removeItem("discount");
+    } else {
+      window.location.href =
+        "/seat-selecting?movieId=" + movieId + "&showTimeId=" + showTimeId;
+      toast.showToast("Đặt vé thất bại, vui lòng thử lại!");
+      setTimeout(() => {
+        localStorage.removeItem("movieId");
+        localStorage.removeItem("showTimeId");
+        localStorage.removeItem("total");
+        localStorage.removeItem("discount");
+      }, 1000);
+    }
+  };
+  useEffect(() => {
+    addBooking();
+  }, []);
 
-  bookingHistoryApi.add(
-    user.id,
-    showTimeId,
-    seats,
-    discount,
-    total,
-    BookingStatus.cancel
-  ); // nen add vao 1 booking history fail
-  setTimeout(() => {
-    localStorage.removeItem("movieId");
-    localStorage.removeItem("showTimeId");
-    localStorage.removeItem("total");
-    localStorage.removeItem("discount");
-  }, 1000);
+  // bookingHistoryApi.add(
+  //   user.id,
+  //   showTimeId,
+  //   seats,
+  //   discount,
+  //   total,
+  //   BookingStatus.cancel
+  // ); // nen add vao 1 booking history fail
 
   return <></>;
 };

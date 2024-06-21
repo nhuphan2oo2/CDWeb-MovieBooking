@@ -5,11 +5,13 @@ import FilmCard from "../../components/FilmCard";
 import { Movie, Setting } from "../../type/type";
 import CustomSlider from "../../components/CustomSlider";
 import movieApi from "../../apis/movieApi";
+import Loading from "../../components/Loading/Loading";
 
 const SHOWING_MOVIE = "2";
 const COMING_MOVIE = "1";
 
 const Homepage = () => {
+  const [loading, setLoading] = useState(true);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [comingMovies, setComingMovies] = useState<Movie[]>([]);
 
@@ -34,12 +36,14 @@ const Homepage = () => {
         setComingMovies(response.data);
       })
       .catch((error) => console.error(error));
+    setLoading(false);
   }, []);
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <div className="">
       <Banner />
-
       <div className="flex flex-col gap-10 mx-auto mt-10 max-w-7xl ">
         <div className="flex flex-col gap-3 ">
           <h1 className="text-3xl text-center ">PHIM ĐANG CHIẾU</h1>
