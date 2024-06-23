@@ -88,5 +88,13 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>your-repository-id</id>
+            <name>CDWeb-MovieBooking</name>
+            <url>https://github.com/quynhuw/CDWeb-MovieBooking</url>
+        </repository>
+    </distributionManagement>
+
 
 </project>

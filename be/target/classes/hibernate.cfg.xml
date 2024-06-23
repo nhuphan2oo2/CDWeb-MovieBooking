@@ -4,9 +4,9 @@
     <session-factory>
         <!--Database connection settings -->
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://207.148.22.152:3306/tmdt</property>
-        <property name="hibernate.connection.username">tmdt</property>
-        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.url">jdbc:mysql://34.126.172.188:3306/movie_ticketing</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password"></property>
 
         <!--SQL dialect-->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -25,10 +25,15 @@
 
 
         <!-- Entity mapping -->
-<!--        <mapping class="com.example.be.models.Movie" />-->
-<!--        <mapping class="com.example.be.models.Screen" />-->
-<!--        <mapping class="com.example.be.models.Seat" />-->
-<!--        <mapping class="com.example.be.models.Movies" />-->
+        <mapping class="com.example.be.models.Movie" />
+        <mapping class="com.example.be.models.Screen" />
+        <mapping class="com.example.be.models.Seat" />
+        <mapping class="com.example.be.models.BookingHistory" />
+        <mapping class="com.example.be.models.ShowTime" />
+        <mapping class="com.example.be.models.Ticket" />
+        <mapping class="com.example.be.models.Image" />
+        <mapping class="com.example.be.models.User" />
+        <mapping class="com.example.be.models.ScreenShowTime" />
 
     </session-factory>
 </hibernate-configuration>
