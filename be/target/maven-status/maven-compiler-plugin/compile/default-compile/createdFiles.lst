@@ -3,8 +3,10 @@ com\example\be\controllers\SeatController.class
 com\example\be\models\ScreenShowTime.class
 com\example\be\BeApplication.class
 com\example\be\services\MovieService.class
+com\example\be\dto\BookingHistoryDTO.class
 com\example\be\services\UserService.class
 com\example\be\controllers\UserController.class
+com\example\be\dto\MovieDTO.class
 com\example\be\repositories\ScreenShowTimeRepository.class
 com\example\be\models\Screen.class
 com\example\be\controllers\ShowTimeController.class
@@ -21,10 +23,12 @@ com\example\be\models\ShowTime.class
 com\example\be\services\BookingHistoryService.class
 com\example\be\models\BookingHistory.class
 com\example\be\controllers\MovieController.class
+com\example\be\services\EmailService.class
 com\example\be\models\User.class
 com\example\be\repositories\ScreenRepository.class
 com\example\be\repositories\ShowTimeRepository.class
 com\example\be\repositories\MovieRepository.class
+com\example\be\dto\PaymentReqDTO.class
 com\example\be\repositories\BookingHistoryRepository.class
 com\example\be\repositories\SeatRepository.class
 com\example\be\repositories\UserRepository.class

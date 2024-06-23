@@ -5,11 +5,13 @@ E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\models\Screen.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\repositories\ShowTimeRepository.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\utils\HibernateUtils.java
+E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\dto\MovieDTO.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\repositories\UserRepository.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\controllers\ResponseObject.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\models\ScreenShowTime.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\repositories\TicketRepository.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\services\TicketService.java
+E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\dto\BookingHistoryDTO.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\services\BookingHistoryService.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\repositories\ScreenShowTimeRepository.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\services\MovieService.java
@@ -19,9 +21,11 @@ E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\controllers\SeatController.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\services\SeatService.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\services\ShowTimeService.java
+E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\services\EmailService.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\repositories\MovieRepository.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\services\UserService.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\models\BookingHistory.java
+E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\dto\PaymentReqDTO.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\repositories\ScreenRepository.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\models\Image.java
 E:\LastSemester\MovieBooking\CDWeb-MovieBooking\be\src\main\java\com\example\be\models\Movie.java
