@@ -1,8 +1,6 @@
 package com.example.be.services;
 
 import com.example.be.models.BookingHistory;
-import com.example.be.models.Movie;
-import com.example.be.models.Seat;
 import com.example.be.models.Ticket;
 import com.example.be.repositories.BookingHistoryRepository;
 import com.example.be.repositories.SeatRepository;
@@ -10,11 +8,8 @@ import com.example.be.repositories.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookingHistoryService {
@@ -32,39 +27,7 @@ public class BookingHistoryService {
 
     //  Booking feature
     public BookingHistory add(BookingHistory bookingHistory) {
-        bookingHistory.setTime(LocalDateTime.now());
-        if (bookingHistory.getStatus() == BookingHistory.FAILED) {
-            for (Ticket ticket : bookingHistory.getTickets()) {
-                Seat seat = seatRepository.findById(ticket.getSeat().getId());
-                seat.setStatus(1);
-                seatRepository.save(seat);
-            }
-            BookingHistory bookingHistorySaved = bookingHistoryRepository.save(bookingHistory);
-            for (Ticket ticket : bookingHistory.getTickets()) {
-                ticket.setBookingHistory(bookingHistorySaved);
-            }
-            ticketRepository.saveAll(bookingHistory.getTickets());
-            for (Ticket ticket : bookingHistorySaved.getTickets()) {
-                ticket.setBookingHistory(null);
-            }
-            return bookingHistorySaved;
-
-        } else {
-            for (Ticket ticket : bookingHistory.getTickets()) {
-                Seat seat = seatRepository.findById(ticket.getSeat().getId());
-                seat.setStatus(0);
-                seatRepository.save(seat);
-            }
-            BookingHistory bookingHistorySaved = bookingHistoryRepository.save(bookingHistory);
-            for (Ticket ticket : bookingHistory.getTickets()) {
-                ticket.setBookingHistory(bookingHistorySaved);
-            }
-            ticketRepository.saveAll(bookingHistory.getTickets());
-            for (Ticket ticket : bookingHistorySaved.getTickets()) {
-                ticket.setBookingHistory(null);
-            }
-            return bookingHistorySaved;
-        }
+        return bookingHistoryRepository.save(bookingHistory);
     }
 
     private BookingHistory clearBookingHistory(BookingHistory bookingHistory) {
@@ -92,15 +55,28 @@ public class BookingHistoryService {
             for (Ticket ticket : bookingHistory.getTickets()) {
                 ticket.getShowTime().setTickets(null);
                 ticket.getShowTime().getMovie().setShowTimes(null);
-//                ticket.getShowTime().setScreen(null);
-//                ticket.setBookingHistory(null);
-//                ticket.getSeat().setScreen(null);
-//                ticket.getSeat().setTickets(null);
+                ticket.getShowTime().getScreenShowTime().setSeats(null);
+                ticket.getShowTime().getScreenShowTime().getScreen().setScreenShowTimes(null);
+                ticket.setBookingHistory(null);
+                ticket.getSeat().setTickets(null);
             }
         }
         return bookingHistories;
     }
 
+    public BookingHistory getLastBookingByUserId(int userId) {
+        BookingHistory bookingHistory = bookingHistoryRepository.findTop1ByUserIdOrderByTimeDesc(userId);
+        bookingHistory.setUser(null);
+        for (Ticket ticket : bookingHistory.getTickets()) {
+            ticket.getShowTime().setTickets(null);
+            ticket.getShowTime().getMovie().setShowTimes(null);
+            ticket.getShowTime().getScreenShowTime().setSeats(null);
+            ticket.getShowTime().getScreenShowTime().getScreen().setScreenShowTimes(null);
+            ticket.setBookingHistory(null);
+            ticket.getSeat().setTickets(null);
+        }
+        return bookingHistory;
+    }
     public int getRevenueInYear(int year) {
         return bookingHistoryRepository.findTotalByYearAndStatus(year, BookingHistory.SUCCESS);
     }

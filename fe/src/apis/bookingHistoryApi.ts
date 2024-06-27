@@ -1,4 +1,4 @@
-import { SeatType } from "../type/type";
+import axios from "axios";
 import AxiosClient from "./AxiosClient";
 
 const bookingHistoryApi = {
@@ -10,36 +10,9 @@ const bookingHistoryApi = {
     const url = `/bookingHistories?userId=${userId}`;
     return AxiosClient.get(url);
   },
-  add(
-    userId: number,
-    showTimeId: number,
-    seats: SeatType[],
-    discount: number,
-    total: number,
-    status: number
-  ) {
-    const url = `/bookingHistories`;
-    const body = {
-      user: {
-        id: userId,
-      },
-      tickets: seats.map((seat) => {
-        return {
-          showTime: {
-            id: showTimeId,
-          },
-          seat: {
-            id: seat.id,
-            seatIndex: seat.seatIndex,
-          },
-        };
-      }),
-      discount: discount,
-      total: total,
-      status: status,
-    };
-    localStorage.setItem("body", JSON.stringify(body));
-    return AxiosClient.post(url, body);
+  getLastByUserId(userId: number) {
+    const url = `/bookingHistories/getLastBooking?userId=${userId}`;
+    return AxiosClient.get(url);
   },
   pay(amount: number) {
     const url = `/payment/create_payment?amount=${amount}`;
@@ -55,3 +28,26 @@ const bookingHistoryApi = {
   },
 };
 export default bookingHistoryApi;
+export const add = async (
+  userId: number,
+  showTimeId: number,
+  seatsId: number[],
+  discount: number
+) => {
+  const url = `${import.meta.env.VITE_API_END_POINT}/payment/payment_success`;
+  const body = {
+    seatIds: seatsId,
+    userId: userId,
+    discount: discount,
+    showTimeId: showTimeId,
+  };
+  const response = await axios.post(url, body);
+  return response;
+};
+
+export const getAllYears = async () => {
+  const url = `${import.meta.env.VITE_API_END_POINT}/bookingHistories/allYears`;
+  const response = await axios.get(url);
+
+  return response.data.data as number[];
+};

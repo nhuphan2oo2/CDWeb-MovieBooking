@@ -12,7 +12,7 @@ import AdminDashboard from "../pages/AdminDashboard";
 
 const pathName = {
   homepage: "/",
-  userPage: "/user/:id",
+  userPage: "/user",
   searchPage: "/search",
   filmsPage: "/movies",
   filmPage: "/movie/:id",

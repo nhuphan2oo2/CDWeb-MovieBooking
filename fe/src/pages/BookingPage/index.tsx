@@ -4,19 +4,15 @@ import bookingHistoryApi from "../../apis/bookingHistoryApi";
 import { BookingType } from "../../type/type";
 
 const SuccessBookingPage = () => {
-  const [bookingHistories, setBookingHistories] = useState<BookingType[]>([]);
   const [bookingHistory, setBookingHistory] = useState<BookingType>();
   const [visibleForm, setVisibleForm] = useState(false);
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
 
   useEffect(() => {
-    bookingHistoryApi.getByUserId(user.id).then((response) => {
-      setBookingHistories(response.data);
+    bookingHistoryApi.getLastByUserId(user.id).then((response) => {
+      setBookingHistory(response.data);
     });
   }, []);
-  useEffect(() => {
-    setBookingHistory(bookingHistories[bookingHistories.length - 1]);
-  }, [bookingHistories]);
 
   const handleCloseForm = () => {
     document.querySelector("#form")?.classList.remove("animate-film-form-open");

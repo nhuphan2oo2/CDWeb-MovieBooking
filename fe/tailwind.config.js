@@ -23,8 +23,10 @@ export default {
         "update-form-open": "update-form-open 0.4s ",
         "film-form-open": "film-form-open 0.5s ",
         "film-form-close": "film-form-close 0.5s ",
+        spin: "spin 1s linear infinite",
       },
     },
   },
+  // eslint-disable-next-line no-undef
   plugins: [require("tailwindcss-animate")],
 };

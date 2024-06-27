@@ -52,7 +52,7 @@ const BookingHistory = () => {
                 <img
                   className="w-full rounded"
                   src={
-                    bookingHistories[index].tickets[0].showTime?.movie?.image
+                    bookingHistories[index].tickets[0]?.showTime?.movie?.image
                   }
                   alt=""
                 />
@@ -98,12 +98,11 @@ const BookingHistory = () => {
       </div>
       <div className="flex flex-col gap-5">
         {bookingHistories.map((bookingHistorie, index) => {
-          const movie = bookingHistorie.tickets[0].showTime?.movie;
-
+          const movie = bookingHistorie.tickets[0]?.showTime?.movie;
           return (
             <div
               id={`booking-history-item-${index}`}
-              key={bookingHistorie.tickets[0].id}
+              key={bookingHistorie.tickets[0]?.id}
               className="flex items-center justify-between py-2 pl-3 pr-4 mx-2 text-primary bg-gray-200 rounded cursor-pointer hover:scale-[1.01] duration-150"
             >
               <div className="flex items-center gap-2">
@@ -114,18 +113,17 @@ const BookingHistory = () => {
                 />
                 <div className="w-80">{movie?.nameVn}</div>
               </div>
-              <div
+              <strong
                 className={`${
-                  Number.parseInt(movie?.status || "-1") ===
-                  BookingStatus.cancel
+                  bookingHistorie.status == BookingStatus.cancel
                     ? "text-red-500"
-                    : "text-green-400"
+                    : "text-green-600"
                 }`}
               >
-                {Number.parseInt(movie?.status || "-1") === BookingStatus.cancel
+                {bookingHistorie.status == BookingStatus.cancel
                   ? "Đã hủy"
                   : "Thành công"}
-              </div>
+              </strong>
               <div>
                 {" "}
                 {bookingHistorie.time.slice(11, 16).replaceAll("-", "/")}

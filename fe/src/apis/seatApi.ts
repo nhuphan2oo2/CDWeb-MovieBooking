@@ -1,4 +1,3 @@
-import { SeatType } from "../type/type";
 import AxiosClient from "./AxiosClient";
 
 const seatApi = {
@@ -18,9 +17,9 @@ const seatApi = {
     const url = `/seats/${id}`;
     return AxiosClient.get(url);
   },
-  isBookingList(seats: SeatType[]) {
+  isBookingList(seatsID: number[]) {
     const url = `/seats/isBookingList`;
-    return AxiosClient.post(url, seats);
+    return AxiosClient.post(url, seatsID);
   },
 };
 export default seatApi;

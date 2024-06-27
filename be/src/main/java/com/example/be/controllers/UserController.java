@@ -1,20 +1,26 @@
 package com.example.be.controllers;
 
-import com.example.be.models.BookingHistory;
 import com.example.be.models.User;
+import com.example.be.services.EmailService;
 import com.example.be.services.UserService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping
     public ResponseEntity<List<User>> getAll() {
@@ -52,4 +58,23 @@ public class UserController {
 
         return userService.update(user);
     }
+
+    ResponseEntity<ResponseObject> sendBillEmail(@RequestParam String email) {
+        try {
+            User user = userService.findByEmail(email);
+            Map<String, Object> templateModel = new HashMap<>();
+            templateModel.put("name", user.getName());
+            emailService.sendHtmlEmailPaymentSuccess(email, "Your Bill!", templateModel);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Send new password successful", "")
+            );
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("failed", "Send new password fail", "")
+            );
+        }
+    }
+
+
 }

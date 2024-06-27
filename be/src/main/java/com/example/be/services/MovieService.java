@@ -1,7 +1,7 @@
 package com.example.be.services;
 
+import com.example.be.dto.MovieDTO;
 import com.example.be.models.Movie;
-
 import com.example.be.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,9 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public List<Movie> all() {
-        return clearListMovie(movieRepository.findAll());
+    public List<MovieDTO> all() {
+//        return clearListMovie(movieRepository.findAll());
+        return movieRepository.findAllMovieDTO();
     }
 
     public Movie singleMovie(int id) {

@@ -15,6 +15,10 @@ import java.util.List;
 @ToString
 @Table(name = "seats")
 public class Seat {
+    public static int BOOKED = 0;
+    public static int AVAILABLE = 1;
+    public static int SELECTED = 2;
+    public static int UNAVAILABLE = 3;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,4 +28,7 @@ public class Seat {
     private ScreenShowTime screenShowTime;
     @OneToMany(mappedBy = "seat")
     private List<Ticket> tickets;
+
 }
+
+
