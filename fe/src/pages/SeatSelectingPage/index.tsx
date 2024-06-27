@@ -75,37 +75,39 @@ const SeatSelectingPage = () => {
   ) => {
     if (!userId) return toast.showToast("Vui lòng đăng nhập để đặt vé");
     if (seats.length === 0) return toast.showToast("Vui lòng chọn ghế");
-    seatApi.isBookingList(state.selectedSeats).then((response) => {
-      if (response.status === 226) {
-        const bookedSeats: SeatType[] = response.data;
-        alert(
-          `Ghế ${bookedSeats
-            ?.map((seat) => seat.seatIndex)
-            .join(", ")} đã được đặt`
-        );
-        bookedSeats.forEach((bookedSeat: SeatType) => {
-          seats.forEach((seat) => {
-            if (seat.id === bookedSeat.id) {
-              seat.status = SeatStatus.booked;
-              dispatch(remove(seat));
-            }
+    seatApi
+      .isBookingList(state.selectedSeats?.map((s) => s && s.id))
+      .then((response) => {
+        if (response.status === 226) {
+          const bookedSeats: SeatType[] = response.data;
+          alert(
+            `Ghế ${bookedSeats
+              ?.map((seat) => seat.seatIndex)
+              .join(", ")} đã được đặt`
+          );
+          bookedSeats.forEach((bookedSeat: SeatType) => {
+            seats.forEach((seat) => {
+              if (seat.id === bookedSeat.id) {
+                seat.status = SeatStatus.booked;
+                dispatch(remove(seat));
+              }
+            });
           });
-        });
-        return;
-      } else if (response.status === 200) {
-        // save this booking to local storage
-        localStorage.setItem("movieId", JSON.stringify(movieId));
-        localStorage.setItem("showTimeId", JSON.stringify(showTimeId));
-        localStorage.setItem("seats", JSON.stringify(seats));
-        localStorage.setItem("discount", JSON.stringify(discount));
-        localStorage.setItem("total", JSON.stringify(total));
+          return;
+        } else if (response.status === 200) {
+          // save this booking to local storage
+          localStorage.setItem("movieId", JSON.stringify(movieId));
+          localStorage.setItem("showTimeId", JSON.stringify(showTimeId));
+          localStorage.setItem("seats", JSON.stringify(seats));
+          localStorage.setItem("discount", JSON.stringify(discount));
+          localStorage.setItem("total", JSON.stringify(total));
 
-        // payment
-        bookingHistoryApi.pay(total).then((response) => {
-          window.location.href = response.data;
-        });
-      }
-    });
+          // payment
+          bookingHistoryApi.pay(total).then((response) => {
+            window.location.href = response.data;
+          });
+        }
+      });
   };
 
   return (
@@ -168,12 +170,19 @@ const SeatSelectingPage = () => {
                   .map((selectedSeat) => selectedSeat.seatIndex)
                   .join(", ")}
               </div>
-              <div>{formatCurrency(50000 * state.selectedSeats.length)}</div>
+              <div>
+                {showTime?.price &&
+                  formatCurrency(showTime?.price * state.selectedSeats.length)}
+              </div>
             </div>
           </div>
           <div className="flex my-2 justify-between py-3 px-5 text-[20px] font-bold">
             <div className="">Tổng tiền</div>
-            <div>{formatCurrency(50000 * state.selectedSeats.length)}</div>
+            <div>
+              {" "}
+              {showTime?.price &&
+                formatCurrency(showTime?.price * state.selectedSeats.length)}
+            </div>
           </div>
           <button
             onClick={() =>
@@ -181,7 +190,9 @@ const SeatSelectingPage = () => {
                 JSON.parse(sessionStorage.getItem("user") || "{}").id || 0,
                 state.selectedSeats,
                 0,
-                50000 * state.selectedSeats.length
+                showTime?.price == undefined
+                  ? 0
+                  : showTime.price * state.selectedSeats.length
               )
             }
             className="py-3 text-[18px] uppercase mx-5 text-white rounded bg-primary active:scale-[0.95] hover:brightness-110 transition-all "

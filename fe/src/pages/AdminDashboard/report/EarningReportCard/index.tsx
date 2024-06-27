@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { FaEllipsisV } from "react-icons/fa";
 import Chart from "./Chart";
-import bookingHistoryApi from "../../../../apis/bookingHistoryApi";
+import bookingHistoryApi, {
+  getAllYears,
+} from "../../../../apis/bookingHistoryApi";
 
 export type SeriesItem = {
   name: string;
@@ -15,10 +18,10 @@ type DataType = {
 
 const EarningReportCard = () => {
   const [years, setYears] = useState<number[]>([2022, 2023, 2024]);
-  const [activeYear, setActiveYear] = useState(years[0]);
+  const [activeYear, setActiveYear] = useState(0);
   const [xAxis, setXAxis] = useState<string[]>([]);
   const [yAxis, setYAxis] = useState<SeriesItem[]>([]);
-  const [data, setData] = useState<DataType[]>([]);
+  const [datas, setDatas] = useState<DataType[]>([]);
 
   const handleActiveYear = (year: number) => {
     setActiveYear(year);
@@ -28,113 +31,53 @@ const EarningReportCard = () => {
   const handleToggleYear = () => {
     setToggleYear(!toggleYear);
   };
-  // const data = [
-  //   {
-  //     year: 2024,
-  //     x: [
-  //       "Jan",
-  //       "Feb",
-  //       "Mar",
-  //       "Apr",
-  //       "May",
-  //       "Jun",
-  //       "July",
-  //       "Aug",
-  //       "Sep",
-  //       "Oct",
-  //       "Nov",
-  //       "Dec",
-  //     ],
-  //     y: [
-  //       {
-  //         name: "Orders",
-  //         data: [30, 10, 45, 38, 15, 30, 35, 28, 8, 45, 10, 60],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     year: 2023,
-  //     x: [
-  //       "Jan",
-  //       "Feb",
-  //       "Mar",
-  //       "Apr",
-  //       "May",
-  //       "Jun",
-  //       "July",
-  //       "Aug",
-  //       "Sep",
-  //       "Oct",
-  //       "Nov",
-  //       "Dec",
-  //     ],
-  //     y: [
-  //       {
-  //         name: "Orders",
-  //         data: [28, 10, 45, 38, 15, 30, 35, 28, 8, 45, 10, 60],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     year: 2022,
-  //     x: [
-  //       "Jan",
-  //       "Feb",
-  //       "Mar",
-  //       "Apr",
-  //       "May",
-  //       "Jun",
-  //       "July",
-  //       "Aug",
-  //       "Sep",
-  //       "Oct",
-  //       "Nov",
-  //       "Dec",
-  //     ],
-  //     y: [
-  //       {
-  //         name: "Orders",
-  //         data: [10, 10, 45, 38, 15, 30, 35, 28, 8, 45, 10, 60],
-  //       },
-  //     ],
-  //   },
-  // ];
+
+  const getRevenue = async () => {
+    const datasTemp: DataType[] = [];
+    const allYears: number[] = await getAllYears();
+    setYears(allYears);
+    setActiveYear(allYears[0]);
+    for (let i = 0; i < allYears.length; i++) {
+      const data = await bookingHistoryApi.revenueMonthly(allYears[i]);
+      const yearData = data.data.data;
+      console.log(yearData);
+
+      datasTemp.push({
+        year: allYears[i],
+        x: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "July",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ],
+        y: [
+          {
+            name: "Orders",
+            data: yearData,
+          },
+        ],
+      });
+    }
+    // console.log(datasTemp);
+    setDatas(datasTemp);
+  };
 
   useEffect(() => {
-    bookingHistoryApi.getAllYears().then((res) => {
-      setYears(res.data.data);
-      res.data.data.map((year: number) => {
-        bookingHistoryApi.revenueMonthly(year).then((res) => {
-          setData([
-            ...data,
-            {
-              year: year,
-              x: [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "July",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec",
-              ],
-              y: [{ name: "" + year, data: res.data.data }],
-            },
-          ]);
-          console.log(name, "" + year, data, res.data.data);
-        });
-      });
-    });
+    getRevenue();
   }, []);
   useEffect(() => {
-    setXAxis(data.find((item) => item.year === activeYear)?.x || []);
-    setYAxis(data.find((item) => item.year === activeYear)?.y || []);
-  }, [activeYear, data]);
+    setXAxis(datas.find((item) => item.year === activeYear)?.x || []);
+    setYAxis(datas.find((item) => item.year === activeYear)?.y || []);
+    // console.log(data.find((item) => item.year === activeYear)?.y || []);
+  }, [activeYear, datas]);
 
   return (
     <div className="flex flex-col gap-6 bg-white rounded-md text-blacks shadow-chart-report">

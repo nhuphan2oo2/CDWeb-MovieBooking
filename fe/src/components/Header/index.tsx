@@ -53,7 +53,7 @@ const Header = () => {
             Đăng nhập
           </div>
           <div
-            onClick={() => navigate(`/user/${user?.id}`)}
+            onClick={() => navigate(`/user`)}
             className={`group-hover/item:opacity-70 ${
               user?.id ? "block" : "hidden"
             }`}

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axios from "axios";
 import AxiosClient from "./AxiosClient";
 
 const userApi = {
@@ -32,3 +34,33 @@ const userApi = {
   },
 };
 export default userApi;
+export const updateUser = async (
+  id: number,
+  name: string,
+  birth: string,
+  email: string,
+  phone: string
+) => {
+  try {
+    const infor = {
+      id: id,
+      name: name,
+      email: email,
+      phone: phone,
+      birth: birth,
+    };
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_END_POINT}/users/update`,
+      infor
+    );
+    if (response.data.status == "ok") {
+      const user = response.data.data;
+      sessionStorage.setItem("user", JSON.stringify(user));
+      return { success: true, user: user };
+    } else {
+      return { success: false, message: "Wrong username or password" };
+    }
+  } catch (error: any) {
+    return { success: false, message: error.message };
+  }
+};

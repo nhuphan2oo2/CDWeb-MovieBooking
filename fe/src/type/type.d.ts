@@ -44,7 +44,7 @@ export type Setting = {
 };
 
 export type SeatType = {
-  id?: number;
+  id: number;
   seatIndex?: string;
   status?: number;
   screen?: ScreenType;
@@ -79,7 +79,7 @@ export type screenShowTimeType = {
 export type ScreenType = {
   id?: number;
   capacity?: number;
-  status?: number;
+  name?: string;
 };
 export type BookingType = {
   id?: number;
