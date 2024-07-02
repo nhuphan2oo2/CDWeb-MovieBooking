@@ -1,14 +1,20 @@
 package com.example.be.controllers;
 
+import com.example.be.dto.RegisterReqDTO;
+import com.example.be.dto.ReqLoginDTO;
+import com.example.be.dto.UserDTO;
 import com.example.be.models.User;
+import com.example.be.models.VerificationCode;
 import com.example.be.services.EmailService;
 import com.example.be.services.UserService;
+import com.example.be.services.VerificationCodeService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +27,8 @@ public class UserController {
 
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private VerificationCodeService verificationCodeService;
 
     @GetMapping
     public ResponseEntity<List<User>> getAll() {
@@ -33,8 +41,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    ResponseEntity<ResponseObject> login(@RequestBody User user) {
-        User userFind = userService.login(user.getEmail(), user.getPassword());
+    ResponseEntity<ResponseObject> login(@RequestBody ReqLoginDTO reqLoginDTO) {
+        User userFind = userService.login(reqLoginDTO.getEmail(), reqLoginDTO.getPassword());
         return userFind != null ?
                 ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject("ok", "Login successful", userFind)
@@ -43,20 +51,15 @@ public class UserController {
                         new ResponseObject("failed", "Invalid username or password", "")
                 );
     }
-//    @PostMapping("/login")
-//    public ResponseEntity<User> login(@RequestBody User user) {
-//        User userFind = userService.login(user.getEmail(), user.getPassword());
-//        if (userFind == null) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//        return new ResponseEntity<>(userFind, HttpStatus.OK);
-//    }
 
     @PutMapping("/update")
-    public User update(@RequestBody User user) {
-        User u = userService.get(user.getId());
-
-        return userService.update(user);
+    public ResponseEntity<ResponseObject> update(@RequestBody UserDTO userDTO) {
+        User user = userService.update(userDTO);
+        return user == null ? ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("failed", "Update fail", "")
+        ) : ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Update successful", user)
+        );
     }
 
     ResponseEntity<ResponseObject> sendBillEmail(@RequestParam String email) {
@@ -76,5 +79,48 @@ public class UserController {
         }
     }
 
+    @PostMapping("/register")
+    ResponseEntity<ResponseObject> register(@RequestBody RegisterReqDTO registerReqDTO) {
+        if (!verificationCodeService.isExist(registerReqDTO.getEmail(), registerReqDTO.getVerificationCode())) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("failed", "Invalid verification code", "")
+            );
+        }
+        if (userService.isExistEmail(registerReqDTO.getEmail())) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("failed", "Email already exists", "")
+            );
+        }
+        User newUser = userService.register(registerReqDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Register successful", newUser)
+        );
+    }
+    @GetMapping("/sendVerificationEmail")
+    ResponseEntity<ResponseObject> sendVerificationEmail(@RequestParam String email, @RequestParam String name) {
+        try {
+            String code = userService.generateVerificationCode();
+            VerificationCode verificationCode = new VerificationCode();
+            verificationCode.setEmail(email);
+            verificationCode.setCode(code);
+            verificationCode.setExpirationTime(LocalDateTime.now().plusMinutes(5));
+            verificationCodeService.save(verificationCode);
+
+            Map<String, Object> templateModel = new HashMap<>();
+
+            templateModel.put("name", name);
+            templateModel.put("verificationCode", code);
+
+            emailService.sendHtmlEmailVerificationCode(email, "Your Verification Code", templateModel);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Send Verification Code successful", "")
+            );
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("failed", "Send Verification Code fail", "")
+            );
+        }
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.be.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,7 @@ public class ShowTime {
     @OneToOne
     private ScreenShowTime screenShowTime;
     @OneToMany(mappedBy = "showTime")
+    @JsonBackReference
     private List<Ticket> tickets;
     private LocalDateTime startTime;
     private LocalDateTime endTime;

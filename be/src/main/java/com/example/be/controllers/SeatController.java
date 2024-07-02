@@ -1,5 +1,6 @@
 package com.example.be.controllers;
 
+import com.example.be.dto.BookingDTO;
 import com.example.be.models.Seat;
 import com.example.be.services.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -48,14 +50,30 @@ public class SeatController {
     public ResponseEntity<Seat> get(@PathVariable int id) {
         return new ResponseEntity<>(seatService.get(id), HttpStatus.OK);
     }
-//  return seat list are booked
+
+    //  return seat list are booked
+//    @PostMapping("/isBookingList")
+//    public ResponseEntity<List<Seat>> chooseSeat(@RequestBody List<Integer> seats) {
+//        List<Seat> seatBooked = new ArrayList<>();
+//        for (int seat : seats) {
+//            boolean checkSeat = seatService.checkSeatStatus(seat, 0);
+//            if (checkSeat) {
+//                seatBooked.add(seatService.get(seat));
+//            }
+//        }
+//        if (seatBooked.size() > 0) {
+//            return new ResponseEntity<>(seatBooked, HttpStatus.IM_USED);
+//        }
+//        return new ResponseEntity<>(null, HttpStatus.OK);
+//    }
+
     @PostMapping("/isBookingList")
-    public ResponseEntity<List<Seat>> chooseSeat(@RequestBody List<Seat> seats) {
+    public ResponseEntity<List<Seat>> chooseSeat(@RequestBody List<Integer> seats) {
         List<Seat> seatBooked = new ArrayList<>();
-        for (Seat seat : seats) {
-            boolean checkSeat = seatService.checkSeatStatus(seat.getId(), 0);
+        for (int seat : seats) {
+            boolean checkSeat = seatService.checkSeatStatus(seat, 0);
             if (checkSeat) {
-                seatBooked.add(seatService.get(seat.getId()));
+                seatBooked.add(seatService.get(seat));
             }
         }
         if (seatBooked.size() > 0) {

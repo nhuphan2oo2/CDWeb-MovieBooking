@@ -1,5 +1,7 @@
 package com.example.be.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,8 +21,10 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @OneToMany(mappedBy = "movie")
+    @JsonBackReference
     private List<Image> images;
     @OneToMany(mappedBy = "movie")
+    @JsonBackReference
     private List<ShowTime> showTimes;
     private String nameVn;
     private String director;

@@ -22,7 +22,7 @@ public class BookingHistoryService {
     private SeatRepository seatRepository;
 
     public BookingHistory singleBookingHistory(int id) {
-        return clearBookingHistory(bookingHistoryRepository.findById(id));
+        return bookingHistoryRepository.findById(id);
     }
 
     //  Booking feature
@@ -49,33 +49,11 @@ public class BookingHistoryService {
     }
 
     public List<BookingHistory> getBookingHistoriesByUserId(int id) {
-        List<BookingHistory> bookingHistories = bookingHistoryRepository.findByUserId(id);
-        for (BookingHistory bookingHistory : bookingHistories) {
-            bookingHistory.setUser(null);
-            for (Ticket ticket : bookingHistory.getTickets()) {
-                ticket.getShowTime().setTickets(null);
-                ticket.getShowTime().getMovie().setShowTimes(null);
-                ticket.getShowTime().getScreenShowTime().setSeats(null);
-                ticket.getShowTime().getScreenShowTime().getScreen().setScreenShowTimes(null);
-                ticket.setBookingHistory(null);
-                ticket.getSeat().setTickets(null);
-            }
-        }
-        return bookingHistories;
+        return  bookingHistoryRepository.findByUserId(id);
     }
 
     public BookingHistory getLastBookingByUserId(int userId) {
-        BookingHistory bookingHistory = bookingHistoryRepository.findTop1ByUserIdOrderByTimeDesc(userId);
-        bookingHistory.setUser(null);
-        for (Ticket ticket : bookingHistory.getTickets()) {
-            ticket.getShowTime().setTickets(null);
-            ticket.getShowTime().getMovie().setShowTimes(null);
-            ticket.getShowTime().getScreenShowTime().setSeats(null);
-            ticket.getShowTime().getScreenShowTime().getScreen().setScreenShowTimes(null);
-            ticket.setBookingHistory(null);
-            ticket.getSeat().setTickets(null);
-        }
-        return bookingHistory;
+        return bookingHistoryRepository.findTop1ByUserIdOrderByTimeDesc(userId);
     }
     public int getRevenueInYear(int year) {
         return bookingHistoryRepository.findTotalByYearAndStatus(year, BookingHistory.SUCCESS);

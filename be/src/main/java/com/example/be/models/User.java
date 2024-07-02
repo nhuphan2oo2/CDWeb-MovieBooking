@@ -1,5 +1,6 @@
 package com.example.be.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,5 +27,6 @@ public class User {
     private int role;
     private int status;
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<BookingHistory> bookingHistories;
 }

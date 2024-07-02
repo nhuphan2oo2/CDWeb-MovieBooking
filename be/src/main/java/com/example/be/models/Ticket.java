@@ -1,5 +1,7 @@
 package com.example.be.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,8 +20,10 @@ public class Ticket {
     @ManyToOne
     private ShowTime showTime;
     @ManyToOne
+    @JsonBackReference
     private BookingHistory bookingHistory;
     @ManyToOne
+    @JsonManagedReference("ticket-seat")
     private Seat seat;
     private int status;
 }

@@ -1,5 +1,6 @@
 package com.example.be.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,5 +21,6 @@ public class Screen {
     private int capacity;
     private String name;
     @OneToMany(mappedBy = "screen")
+    @JsonBackReference
     private List<ScreenShowTime> screenShowTimes;
 }

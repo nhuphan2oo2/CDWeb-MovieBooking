@@ -1,5 +1,7 @@
 package com.example.be.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,8 +27,10 @@ public class Seat {
     private String seatIndex;
     private int status;
     @ManyToOne
+    @JsonBackReference
     private ScreenShowTime screenShowTime;
     @OneToMany(mappedBy = "seat")
+    @JsonBackReference("ticket-seat")
     private List<Ticket> tickets;
 
 }

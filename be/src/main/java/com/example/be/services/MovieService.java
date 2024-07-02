@@ -15,36 +15,76 @@ public class MovieService {
     private MovieRepository movieRepository;
 
     public List<MovieDTO> all() {
-//        return clearListMovie(movieRepository.findAll());
         return movieRepository.findAllMovieDTO();
     }
 
+    public List<Movie> allMovie() {
+        return movieRepository.findAll();
+    }
+
+    public Movie get(int id) {
+        return movieRepository.findById(id);
+    }
+
+    public Movie add(MovieDTO movieDTO) {
+        Movie movie = new Movie();
+        movie.setNameVn(movieDTO.getNameVn());
+        movie.setDirector(movieDTO.getDirector());
+        movie.setActor(movieDTO.getActor());
+        movie.setCountry_name_vn(movieDTO.getCountry_name_vn());
+        movie.setType_name_vn(movieDTO.getType_name_vn());
+        movie.setRelease_date(movieDTO.getRelease_date());
+        movie.setEnd_date(movieDTO.getEnd_date());
+        movie.setBrief_vn(movieDTO.getBrief_vn());
+        movie.setImage(movieDTO.getImage());
+        movie.setTrailer(movieDTO.getTrailer());
+        movie.setStatus("1");
+        movie.setRatings(movieDTO.getRatings());
+        movie.setTime(movieDTO.getTime());
+        movie.setLimitage_vn(movieDTO.getLimitage_vn());
+        movie.setSort_order(movieDTO.getSort_order());
+        return movieRepository.save(movie);
+    }
+
+    public Movie update(int id, MovieDTO movieDTO) {
+        Movie movie = movieRepository.findById(id);
+        movie.setNameVn(movieDTO.getNameVn());
+        movie.setDirector(movieDTO.getDirector());
+        movie.setActor(movieDTO.getActor());
+        movie.setCountry_name_vn(movieDTO.getCountry_name_vn());
+        movie.setType_name_vn(movieDTO.getType_name_vn());
+        movie.setRelease_date(movieDTO.getRelease_date());
+        movie.setEnd_date(movieDTO.getEnd_date());
+        movie.setBrief_vn(movieDTO.getBrief_vn());
+        movie.setImage(movieDTO.getImage());
+        movie.setTrailer(movieDTO.getTrailer());
+        movie.setRatings(movieDTO.getRatings());
+        movie.setTime(movieDTO.getTime());
+        movie.setLimitage_vn(movieDTO.getLimitage_vn());
+        movie.setSort_order(movieDTO.getSort_order());
+        return movieRepository.save(movie);
+    }
+
+    public Movie delete(int id) {
+        Movie movie = movieRepository.findById(id);
+        movie.setStatus("0");
+        return movieRepository.save(movie);
+    }
+
     public Movie singleMovie(int id) {
-        return clearMovie(movieRepository.findById(id));
+        return movieRepository.findById(id);
     }
 
     public List<Movie> getMoviesByType(String type) {
-        return clearListMovie(movieRepository.findByStatus(type));
+        return movieRepository.findByStatus(type);
     }
 
-    private Movie clearMovie(Movie movie) {
-        movie.setShowTimes(null);
-        return movie;
-    }
-
-    private List<Movie> clearListMovie(List<Movie> movies) {
-        for (Movie movie : movies) {
-            clearMovie(movie);
-        }
-        return movies;
-    }
 
     public List<Movie> searchProducts(String nameVn) {
         List<Movie> result = movieRepository.findByNameVnContainingIgnoreCase(nameVn);
-        for(Movie movie: result){
+        for (Movie movie : result) {
             movie.setShowTimes(null);
         }
         return result;
-//        return null;
     }
 }

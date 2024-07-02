@@ -44,6 +44,11 @@ export const add = async (
   const response = await axios.post(url, body);
   return response;
 };
+export const payment = async (amount: number) => {
+  const url = `/payment/create_payment?amount=${amount}`;
+  const response = await axios.get(url);
+  return response.data.data;
+};
 
 export const getAllYears = async () => {
   const url = `${import.meta.env.VITE_API_END_POINT}/bookingHistories/allYears`;

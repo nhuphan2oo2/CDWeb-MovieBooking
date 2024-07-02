@@ -19,7 +19,6 @@ public class MovieDTO {
     private String brief_vn;
     private String image;
     private String trailer;
-    private String status;
     private String ratings;
     private String time;
     private String limitage_vn;

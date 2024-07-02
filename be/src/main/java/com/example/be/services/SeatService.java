@@ -1,5 +1,7 @@
 package com.example.be.services;
 
+import com.example.be.models.Screen;
+import com.example.be.models.ScreenShowTime;
 import com.example.be.models.Seat;
 import com.example.be.models.ShowTime;
 import com.example.be.repositories.SeatRepository;
@@ -7,6 +9,7 @@ import com.example.be.repositories.ShowTimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,8 +19,10 @@ public class SeatService {
     @Autowired
     private ShowTimeRepository showTimeRepository;
 
+    String[] rows = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+
     public List<Seat> getSeatsByScreenShowtimeId(int id) {
-        return clearListSeat(seatRepository.findByScreenShowTimeId(id));
+        return seatRepository.findByScreenShowTimeId(id);
     }
 
     public List<Seat> getSeatsByShowtimeId(int id) {
@@ -51,7 +56,7 @@ public class SeatService {
     }
 
     public Seat get(int id) {
-        return clearSeat(seatRepository.findById(id));
+        return seatRepository.findById(id);
     }
 
     public List<Seat> getListSeats(List<Integer> seatIds) {
@@ -66,19 +71,18 @@ public class SeatService {
         return seatRepository.saveAll(seats);
     }
 
-    private Seat clearSeat(Seat seat) {
-        seat.setTickets(null);
-        seat.getScreenShowTime().setSeats(null);
-        seat.getScreenShowTime().setScreen(null);
-//        seat.setScreen(null);
-        return seat;
-    }
-
-    private List<Seat> clearListSeat(List<Seat> seats) {
-        for (Seat seat : seats) {
-            clearSeat(seat);
+    public List<Seat> addSeats(ScreenShowTime screenShowTime) {
+        List<Seat> seats = new ArrayList<>();
+        for (String row : rows) {
+            for (int col = 1; col <= 12; col++) {
+                Seat seat = new Seat();
+                seat.setSeatIndex(row + col);
+                seat.setStatus(1);
+                seat.setScreenShowTime(screenShowTime);
+                seats.add(seat);
+            }
         }
-        return seats;
+        return seatRepository.saveAll(seats);
     }
 
 }

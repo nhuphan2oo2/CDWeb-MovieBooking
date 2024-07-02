@@ -9,7 +9,7 @@ import movieApi from "../../apis/movieApi";
 import showTimeApi from "../../apis/showTimeApi";
 import seatApi from "../../apis/seatApi";
 import { SeatStatus } from "../../enum";
-import bookingHistoryApi from "../../apis/bookingHistoryApi";
+import { payment } from "../../apis/bookingHistoryApi";
 import { ToastContext } from "../../hooks/ToastMessage/ToastContext";
 
 const SeatSelectingPage = () => {
@@ -73,11 +73,14 @@ const SeatSelectingPage = () => {
     discount: number,
     total: number
   ) => {
+    // check that user is logged in
     if (!userId) return toast.showToast("Vui lòng đăng nhập để đặt vé");
+    // check that user has selected seats
     if (seats.length === 0) return toast.showToast("Vui lòng chọn ghế");
     seatApi
       .isBookingList(state.selectedSeats?.map((s) => s && s.id))
       .then((response) => {
+        // check that selected seats are available
         if (response.status === 226) {
           const bookedSeats: SeatType[] = response.data;
           alert(
@@ -85,6 +88,7 @@ const SeatSelectingPage = () => {
               ?.map((seat) => seat.seatIndex)
               .join(", ")} đã được đặt`
           );
+          //
           bookedSeats.forEach((bookedSeat: SeatType) => {
             seats.forEach((seat) => {
               if (seat.id === bookedSeat.id) {
@@ -95,15 +99,8 @@ const SeatSelectingPage = () => {
           });
           return;
         } else if (response.status === 200) {
-          // save this booking to local storage
-          localStorage.setItem("movieId", JSON.stringify(movieId));
-          localStorage.setItem("showTimeId", JSON.stringify(showTimeId));
-          localStorage.setItem("seats", JSON.stringify(seats));
-          localStorage.setItem("discount", JSON.stringify(discount));
-          localStorage.setItem("total", JSON.stringify(total));
-
           // payment
-          bookingHistoryApi.pay(total).then((response) => {
+          payment(total).then((response) => {
             window.location.href = response.data;
           });
         }

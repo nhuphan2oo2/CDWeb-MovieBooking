@@ -21,18 +21,6 @@ public class EmailService {
 
 
     public void sendHtmlEmailPaymentSuccess(String to, String subject, Map<String, Object> templateModel) throws MessagingException {
-//        MimeMessage message = javaMailSender.createMimeMessage();
-//        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-//
-//        Context context = new Context();
-//        context.setVariables(templateModel);
-//        String htmlContent = templateEngine.process("payment-success", context);
-//
-//        helper.setTo(to);
-//        helper.setSubject(subject);
-//        helper.setText(htmlContent, true);
-//
-//        javaMailSender.send(message);
         Context context = new Context();
         context.setVariables(templateModel);
 
@@ -46,5 +34,21 @@ public class EmailService {
 
         mailSender.send(message);
     }
+
+    public void sendHtmlEmailVerificationCode(String to, String subject, Map<String, Object> templateModel) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        Context context = new Context();
+        context.setVariables(templateModel);
+        String htmlContent = templateEngine.process("verification-code-template", context);
+
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(htmlContent, true);
+
+        mailSender.send(message);
+    }
+
 
 }

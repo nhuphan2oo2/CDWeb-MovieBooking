@@ -45,7 +45,7 @@ const BookingHistory = () => {
               className="cursor-pointer text-end text-[30px]"
               onClick={() => handleCloseForm()}
             >
-              x
+              xs
             </div>
             <div className="flex flex-col justify-center gap-5 text-center">
               <div className="w-32 mx-auto">
@@ -58,7 +58,7 @@ const BookingHistory = () => {
                 />
               </div>
               <div>
-                {bookingHistories[index].tickets[0].showTime?.movie?.nameVn}
+                {bookingHistories[index].tickets[0]?.showTime?.movie?.nameVn}
               </div>
             </div>
             <div className="w-full border border-dashed border-secondary"></div>
